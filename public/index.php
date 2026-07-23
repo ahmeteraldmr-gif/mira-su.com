@@ -41,23 +41,8 @@ function env(string $key, mixed $default = null): mixed {
     return $value;
 }
 
-// Basic PSR-4 Autoloader for App namespace
-spl_autoload_register(function ($class) {
-    $prefix = 'App\\';
-    $baseDir = __DIR__ . '/../app/';
-
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-
-    $relativeClass = substr($class, $len);
-    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+// Require Composer / Framework Autoloader
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Initialize Database Connection & Tables
 \App\Database\Database::getConnection();
