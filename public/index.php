@@ -23,13 +23,34 @@ spl_autoload_register(function ($class) {
 // Initialize Database Connection & Tables
 \App\Database\Database::getConnection();
 
-// Simple Router
+// Robust URI Normalization for Subfolder & cPanel Deployments
 $requestMethod = $_SERVER['REQUEST_METHOD'];
-$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$rawUri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+$scriptName = urldecode($_SERVER['SCRIPT_NAME']);
+$scriptDir = dirname($scriptName);
 
-// Remove trailing slash except root
+// Clean up scriptDir for windows backslashes
+$scriptDir = str_replace('\\', '/', $scriptDir);
+
+$requestUri = $rawUri;
+
+// If request Uri starts with scriptDir, strip it
+if ($scriptDir !== '/' && $scriptDir !== '.' && strpos($requestUri, $scriptDir) === 0) {
+    $requestUri = substr($requestUri, strlen($scriptDir));
+}
+
+// Strip trailing /public if scriptDir didn't include it
+if (strpos($requestUri, '/public') === 0) {
+    $requestUri = substr($requestUri, 7);
+}
+
+// Normalize trailing slashes
 if ($requestUri !== '/' && substr($requestUri, -1) === '/') {
     $requestUri = rtrim($requestUri, '/');
+}
+
+if (empty($requestUri)) {
+    $requestUri = '/';
 }
 
 $routes = require __DIR__ . '/../routes/web.php';
