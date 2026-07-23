@@ -43,12 +43,12 @@
                 ?>
                     <div class="col-lg-4 col-md-6 gallery-item" data-category="<?= htmlspecialchars($item['category']) ?>">
                         <div class="gallery-card shadow-sm rounded-4 overflow-hidden position-relative bg-dark">
-                            <img src="<?= htmlspecialchars($item['image_url']) ?>" class="gallery-img" alt="<?= htmlspecialchars($item['title']) ?>">
+                            <img src="<?= asset($item['image_url']) ?>" class="gallery-img" alt="<?= htmlspecialchars($item['title']) ?>">
                             <div class="gallery-overlay">
                                 <span class="badge <?= $badgeClass ?> mb-2"><?= $badgeText ?></span>
                                 <h5 class="fw-bold text-white mb-1"><?= htmlspecialchars($item['title']) ?></h5>
                                 <p class="small text-light opacity-75 mb-3"><?= htmlspecialchars($item['description']) ?></p>
-                                <button class="btn btn-light btn-sm rounded-pill fw-bold open-lightbox" data-img="<?= htmlspecialchars($item['image_url']) ?>" data-title="<?= htmlspecialchars($item['title']) ?>" data-desc="<?= htmlspecialchars($item['description']) ?>">
+                                <button class="btn btn-light btn-sm rounded-pill fw-bold open-lightbox" data-img="<?= asset($item['image_url']) ?>" data-title="<?= htmlspecialchars($item['title']) ?>" data-desc="<?= htmlspecialchars($item['description']) ?>">
                                     <i class="fa-solid fa-magnifying-glass-plus me-1"></i> Tam Ekran Gör
                                 </button>
                             </div>

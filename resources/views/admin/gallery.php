@@ -15,7 +15,7 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 bg-white">
                 <div style="height: 220px; overflow: hidden; background: #000;" class="position-relative">
-                    <img src="<?= htmlspecialchars($item['image_url']) ?>" class="w-100 h-100" style="object-fit: cover;" alt="<?= htmlspecialchars($item['title']) ?>">
+                    <img src="<?= asset($item['image_url']) ?>" class="w-100 h-100" style="object-fit: cover;" alt="<?= htmlspecialchars($item['title']) ?>">
                     <span class="badge bg-primary position-absolute top-0 start-0 m-3 px-3 py-2">
                         <?= $item['category'] === 'kacak' ? 'Akustik Kaçak' : ($item['category'] === 'robot' ? 'Gider Robotu' : 'Termal Kamera') ?>
                     </span>
