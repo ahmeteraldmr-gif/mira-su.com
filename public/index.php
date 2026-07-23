@@ -2,6 +2,45 @@
 
 session_start();
 
+// Load .env Environment Configuration
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (empty($line) || strpos($line, '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($name, $val) = explode('=', $line, 2);
+            $name = trim($name);
+            $val = trim($val, " \"'");
+            if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                putenv("$name=$val");
+                $_ENV[$name] = $val;
+                $_SERVER[$name] = $val;
+            }
+        }
+    }
+}
+
+function env(string $key, mixed $default = null): mixed {
+    $value = getenv($key);
+    if ($value === false) {
+        return $default;
+    }
+    switch (strtolower($value)) {
+        case 'true':
+        case '(true)':
+            return true;
+        case 'false':
+        case '(false)':
+            return false;
+        case 'null':
+        case '(null)':
+            return null;
+    }
+    return $value;
+}
+
 // Basic PSR-4 Autoloader for App namespace
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
