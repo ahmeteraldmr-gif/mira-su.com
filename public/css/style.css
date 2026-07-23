@@ -455,16 +455,16 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 .page-header-about {
-    background-image: url('/images/header_about.png');
+    background-image: url('../images/header_about.png');
 }
 .page-header-services {
-    background-image: url('/images/header_services.png');
+    background-image: url('../images/header_services.png');
 }
 .page-header-gallery {
-    background-image: url('/images/leak_detect.png');
+    background-image: url('../images/leak_detect.png');
 }
 .page-header-contact {
-    background-image: url('/images/water_filter.png');
+    background-image: url('../images/water_filter.png');
 }
 
 /* Gallery Premium Cards & Overlay */

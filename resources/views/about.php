@@ -37,7 +37,7 @@
             </div>
 
             <div class="col-lg-6">
-                <img src="/images/water_filter.png" alt="Su Arıtma Montajı ve Tesisat" class="img-fluid rounded-4 shadow-lg">
+                <img src="<?= asset('images/water_filter.png') ?>" alt="Su Arıtma Montajı ve Tesisat" class="img-fluid rounded-4 shadow-lg">
             </div>
         </div>
 

@@ -23,6 +23,13 @@ spl_autoload_register(function ($class) {
 // Initialize Database Connection & Tables
 \App\Database\Database::getConnection();
 
+// Global Asset Helper for Subfolder Deployments
+function asset(string $path): string {
+    $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+    $base = rtrim($scriptDir, '/');
+    return $base . '/' . ltrim($path, '/');
+}
+
 // Robust URI Normalization for Subfolder & cPanel Deployments
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $rawUri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));

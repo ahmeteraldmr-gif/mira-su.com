@@ -58,7 +58,7 @@
 
             <div class="col-lg-5">
                 <div class="position-relative">
-                    <img src="/images/hero.png" alt="Miraç Su Tesisatı" class="img-fluid shadow-lg border border-secondary" style="width: 100%; height: 520px; object-fit: cover; border-radius: 24px;">
+                    <img src="<?= asset('images/hero.png') ?>" alt="Miraç Su Tesisatı" class="img-fluid shadow-lg border border-secondary" style="width: 100%; height: 520px; object-fit: cover; border-radius: 24px;">
                     <div class="glass-card position-absolute bottom-0 start-0 m-3 p-3 text-white d-none d-sm-flex align-items-center gap-3">
                         <i class="fa-solid fa-circle-check text-success fs-1"></i>
                         <div>
