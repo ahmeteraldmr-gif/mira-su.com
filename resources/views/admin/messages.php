@@ -48,12 +48,12 @@
                             <td>
                                 <div class="d-flex gap-2">
                                     <?php if (!$m['is_read']): ?>
-                                        <form action="/admin/messages/read" method="POST" class="d-inline">
+                                        <form action="<?= url('/admin/messages/read') ?>" method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="<?= $m['id'] ?>">
-                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Okundu İşaretle"><i class="fa-solid fa-check"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Okundu Olarak İşaretle"><i class="fa-solid fa-check"></i></button>
                                         </form>
                                     <?php endif; ?>
-                                    <form action="/admin/messages/delete" method="POST" class="form-confirm-delete d-inline">
+                                    <form action="<?= url('/admin/messages/delete') ?>" method="POST" class="form-confirm-delete d-inline">
                                         <input type="hidden" name="id" value="<?= $m['id'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fa-solid fa-trash"></i></button>
                                     </form>

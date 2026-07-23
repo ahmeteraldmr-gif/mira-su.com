@@ -28,7 +28,7 @@
                         <button class="btn btn-sm btn-outline-primary fw-bold" data-bs-toggle="modal" data-bs-target="#editGalleryModal<?= $item['id'] ?>">
                             <i class="fa-solid fa-pen-to-square me-1"></i> Düzenle
                         </button>
-                        <form action="/admin/gallery/delete" method="POST" class="form-confirm-delete d-inline">
+                        <form action="<?= url('/admin/gallery/delete') ?>" method="POST" class="form-confirm-delete d-inline">
                             <input type="hidden" name="id" value="<?= $item['id'] ?>">
                             <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i> Sil</button>
                         </form>
@@ -45,7 +45,7 @@
                         <h5 class="modal-title fw-bold">Fotoğraf Düzenle</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form action="/admin/gallery/update" method="POST" enctype="multipart/form-data">
+                    <form action="<?= url('/admin/gallery/update') ?>" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?= $item['id'] ?>">
                         <div class="modal-body">
                             <div class="mb-3">
@@ -92,7 +92,7 @@
                 <h5 class="modal-title fw-bold">Yeni Fotoğraf Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="/admin/gallery/store" method="POST" enctype="multipart/form-data">
+            <form action="<?= url('/admin/gallery/store') ?>" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Fotoğraf Başlığı *</label>

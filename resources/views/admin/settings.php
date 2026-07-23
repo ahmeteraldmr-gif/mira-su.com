@@ -6,7 +6,7 @@
         <p class="text-muted small mb-0">Telefon numarası, adres, WhatsApp hattı ve genel firma bilgilerini güncelleyin.</p>
     </div>
 
-    <form action="/admin/settings/update" method="POST">
+    <form action="<?= url('/admin/settings/update') ?>" method="POST">
         <div class="row g-4">
             <div class="col-md-6">
                 <label class="form-label fw-bold text-secondary">Firma / Site Adı</label>

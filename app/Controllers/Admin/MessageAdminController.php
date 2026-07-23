@@ -7,7 +7,7 @@ use App\Models\ContactMessage;
 class MessageAdminController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }
@@ -30,7 +30,7 @@ class MessageAdminController {
                 $_SESSION['admin_flash'] = 'Mesaj okundu olarak işaretlendi.';
             }
         }
-        header('Location: /admin/messages');
+        header('Location: ' . url('/admin/messages'));
         exit;
     }
 
@@ -43,7 +43,7 @@ class MessageAdminController {
                 $_SESSION['admin_flash'] = 'Mesaj silindi.';
             }
         }
-        header('Location: /admin/messages');
+        header('Location: ' . url('/admin/messages'));
         exit;
     }
 }

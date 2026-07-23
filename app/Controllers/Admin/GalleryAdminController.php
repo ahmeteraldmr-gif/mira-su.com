@@ -7,7 +7,7 @@ use App\Models\GalleryItem;
 class GalleryAdminController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }
@@ -29,7 +29,6 @@ class GalleryAdminController {
             $category = trim($_POST['category'] ?? 'kacak');
             $description = trim($_POST['description'] ?? '');
 
-            // Support image upload if file is posted
             if (!empty($_FILES['image_file']['name'])) {
                 $file = $_FILES['image_file'];
                 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
@@ -52,7 +51,7 @@ class GalleryAdminController {
                 $_SESSION['admin_flash'] = 'Galeriye yeni fotoğraf eklendi.';
             }
         }
-        header('Location: /admin/gallery');
+        header('Location: ' . url('/admin/gallery'));
         exit;
     }
 
@@ -87,7 +86,7 @@ class GalleryAdminController {
                 $_SESSION['admin_flash'] = 'Fotoğraf bilgileri güncellendi.';
             }
         }
-        header('Location: /admin/gallery');
+        header('Location: ' . url('/admin/gallery'));
         exit;
     }
 
@@ -100,7 +99,7 @@ class GalleryAdminController {
                 $_SESSION['admin_flash'] = 'Fotoğraf galeriden silindi.';
             }
         }
-        header('Location: /admin/gallery');
+        header('Location: ' . url('/admin/gallery'));
         exit;
     }
 }

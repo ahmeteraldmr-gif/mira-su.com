@@ -7,7 +7,7 @@ use App\Models\Booking;
 class BookingAdminController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }
@@ -15,7 +15,7 @@ class BookingAdminController {
     public function index() {
         $this->checkAuth();
         $bookings = Booking::getAll();
-        $title = "Servis Talepleri / Randevular - Miraç Su Panel";
+        $title = "Servis Talepleri - Miraç Su Panel";
         $activeAdminPage = 'bookings';
 
         require __DIR__ . '/../../../resources/views/admin/bookings.php';
@@ -28,10 +28,10 @@ class BookingAdminController {
             $status = trim($_POST['status'] ?? 'Bekliyor');
             if ($id > 0) {
                 Booking::updateStatus($id, $status);
-                $_SESSION['admin_flash'] = 'Randevu durumu güncellendi.';
+                $_SESSION['admin_flash'] = 'Talep durumu güncellendi.';
             }
         }
-        header('Location: /admin/bookings');
+        header('Location: ' . url('/admin/bookings'));
         exit;
     }
 
@@ -41,10 +41,10 @@ class BookingAdminController {
             $id = (int)($_POST['id'] ?? 0);
             if ($id > 0) {
                 Booking::delete($id);
-                $_SESSION['admin_flash'] = 'Randevu kaydı silindi.';
+                $_SESSION['admin_flash'] = 'Servis talebi silindi.';
             }
         }
-        header('Location: /admin/bookings');
+        header('Location: ' . url('/admin/bookings'));
         exit;
     }
 }

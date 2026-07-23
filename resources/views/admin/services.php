@@ -39,7 +39,7 @@
                     <button class="btn btn-sm btn-outline-primary fw-bold" data-bs-toggle="modal" data-bs-target="#editServiceModal<?= $s['id'] ?>">
                         <i class="fa-solid fa-pen-to-square me-1"></i> Düzenle
                     </button>
-                    <form action="/admin/services/delete" method="POST" class="form-confirm-delete d-inline">
+                    <form action="<?= url('/admin/services/delete') ?>" method="POST" class="form-confirm-delete d-inline">
                         <input type="hidden" name="id" value="<?= $s['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i> Sil</button>
                     </form>
@@ -55,7 +55,7 @@
                         <h5 class="modal-title fw-bold">Hizmet Düzenle</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form action="/admin/services/update" method="POST">
+                    <form action="<?= url('/admin/services/update') ?>" method="POST">
                         <input type="hidden" name="id" value="<?= $s['id'] ?>">
                         <div class="modal-body">
                             <div class="mb-3">
@@ -106,7 +106,7 @@
                 <h5 class="modal-title fw-bold">Yeni Hizmet Ekle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="/admin/services/store" method="POST">
+            <form action="<?= url('/admin/services/store') ?>" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Hizmet Başlığı *</label>

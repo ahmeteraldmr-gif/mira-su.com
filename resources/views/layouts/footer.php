@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-muted small mb-4">Formu doldurun, mobil acil ekibimiz 15 dakika içinde sizi arasın.</p>
-                    <form action="/randevu-al" method="POST">
+                    <form action="<?= url('/randevu-al') ?>" method="POST">
                         <div class="mb-3">
                             <label class="form-label fw-bold text-secondary">Adınız Soyadınız *</label>
                             <input type="text" name="name" class="form-control form-control-lg fs-6" placeholder="Örn: Ahmet Yılmaz" required>

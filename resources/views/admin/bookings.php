@@ -41,7 +41,7 @@
                             <td class="small text-muted"><?= htmlspecialchars($b['notes'] ?: '-') ?></td>
                             <td class="small text-muted"><?= date('d.m.Y H:i', strtotime($b['created_at'])) ?></td>
                             <td>
-                                <form action="/admin/bookings/status" method="POST" class="d-inline">
+                                <form action="<?= url('/admin/bookings/status') ?>" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="<?= $b['id'] ?>">
                                     <select name="status" class="form-select form-select-sm fw-bold border-0 text-white" onchange="this.form.submit()" style="background-color: <?= $b['status'] === 'Bekliyor' ? '#EAB308' : ($b['status'] === 'İşlemde' ? '#0EA5E9' : ($b['status'] === 'Tamamlandı' ? '#22C55E' : '#64748B')) ?>;">
                                         <option value="Bekliyor" <?= $b['status'] === 'Bekliyor' ? 'selected' : '' ?>>Bekliyor</option>
@@ -54,7 +54,7 @@
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="https://wa.me/90<?= preg_replace('/[^0-9]/', '', $b['phone']) ?>" target="_blank" class="btn btn-sm btn-success" title="WhatsApp Mesaj Gönder"><i class="fa-brands fa-whatsapp"></i></a>
-                                    <form action="/admin/bookings/delete" method="POST" class="form-confirm-delete d-inline">
+                                    <form action="<?= url('/admin/bookings/delete') ?>" method="POST" class="form-confirm-delete d-inline">
                                         <input type="hidden" name="id" value="<?= $b['id'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fa-solid fa-trash"></i></button>
                                     </form>

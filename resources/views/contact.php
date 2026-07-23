@@ -53,7 +53,7 @@
                     <h3 class="fw-bold text-dark mb-1"><i class="fa-solid fa-paper-plane text-primary me-2"></i> Bize Mesaj Gönderin</h3>
                     <p class="text-muted small mb-4">Soru, görüş veya fiyat teklifi talepleriniz için aşağıdaki formu doldurabilirsiniz.</p>
 
-                    <form action="/iletisim/gonder" method="POST">
+                    <form action="<?= url('/iletisim/gonder') ?>" method="POST">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold text-secondary">Adınız Soyadınız *</label>

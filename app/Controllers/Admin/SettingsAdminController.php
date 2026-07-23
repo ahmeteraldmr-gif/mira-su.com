@@ -7,7 +7,7 @@ use App\Models\Setting;
 class SettingsAdminController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }
@@ -40,9 +40,9 @@ class SettingsAdminController {
             ];
 
             Setting::updateMany($data);
-            $_SESSION['admin_flash'] = 'Site ayarları başarıyla güncellendi.';
+            $_SESSION['admin_flash'] = 'Site ve Hakkımızda ayarları başarıyla güncellendi.';
         }
-        header('Location: /admin/settings');
+        header('Location: ' . url('/admin/settings'));
         exit;
     }
 }

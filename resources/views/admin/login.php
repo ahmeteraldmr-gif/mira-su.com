@@ -44,7 +44,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="/admin/login" method="POST">
+    <form action="<?= url('/admin/login') ?>" method="POST">
         <div class="mb-3">
             <label class="form-label fw-bold text-secondary small">Kullanıcı Adı</label>
             <div class="input-group">

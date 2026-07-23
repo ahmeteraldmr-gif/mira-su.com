@@ -7,7 +7,7 @@ use App\Models\Service;
 class ServiceAdminController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }
@@ -25,12 +25,25 @@ class ServiceAdminController {
         $this->checkAuth();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title'] ?? '');
+            $summary = trim($_POST['summary'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $icon = trim($_POST['icon'] ?? 'fa-wrench');
+            $price = trim($_POST['price'] ?? 'Teklif Alınız');
+            $isFeatured = isset($_POST['is_featured']) ? 1 : 0;
+
             if ($title) {
-                Service::create($_POST);
-                $_SESSION['admin_flash'] = 'Yeni hizmet eklendi.';
+                Service::create([
+                    'title' => $title,
+                    'summary' => $summary,
+                    'description' => $description,
+                    'icon' => $icon,
+                    'price' => $price,
+                    'is_featured' => $isFeatured
+                ]);
+                $_SESSION['admin_flash'] = 'Yeni hizmet başarıyla eklendi.';
             }
         }
-        header('Location: /admin/services');
+        header('Location: ' . url('/admin/services'));
         exit;
     }
 
@@ -38,12 +51,26 @@ class ServiceAdminController {
         $this->checkAuth();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = (int)($_POST['id'] ?? 0);
-            if ($id > 0) {
-                Service::update($id, $_POST);
-                $_SESSION['admin_flash'] = 'Hizmet güncellendi.';
+            $title = trim($_POST['title'] ?? '');
+            $summary = trim($_POST['summary'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $icon = trim($_POST['icon'] ?? 'fa-wrench');
+            $price = trim($_POST['price'] ?? 'Teklif Alınız');
+            $isFeatured = isset($_POST['is_featured']) ? 1 : 0;
+
+            if ($id > 0 && $title) {
+                Service::update($id, [
+                    'title' => $title,
+                    'summary' => $summary,
+                    'description' => $description,
+                    'icon' => $icon,
+                    'price' => $price,
+                    'is_featured' => $isFeatured
+                ]);
+                $_SESSION['admin_flash'] = 'Hizmet bilgileri güncellendi.';
             }
         }
-        header('Location: /admin/services');
+        header('Location: ' . url('/admin/services'));
         exit;
     }
 
@@ -56,7 +83,7 @@ class ServiceAdminController {
                 $_SESSION['admin_flash'] = 'Hizmet silindi.';
             }
         }
-        header('Location: /admin/services');
+        header('Location: ' . url('/admin/services'));
         exit;
     }
 }

@@ -7,7 +7,7 @@ use App\Models\User;
 class AuthController {
     public function loginView() {
         if (!empty($_SESSION['admin_user'])) {
-            header('Location: /admin/dashboard');
+            header('Location: ' . url('/admin/dashboard'));
             exit;
         }
         $title = "Yönetici Girişi - Miraç Su Panel";
@@ -26,11 +26,11 @@ class AuthController {
                     'name' => $user['name'],
                     'username' => $user['username']
                 ];
-                header('Location: /admin/dashboard');
+                header('Location: ' . url('/admin/dashboard'));
                 exit;
             } else {
                 $_SESSION['admin_error'] = 'Kullanıcı adı veya şifre hatalı!';
-                header('Location: /admin/login');
+                header('Location: ' . url('/admin/login'));
                 exit;
             }
         }
@@ -39,7 +39,7 @@ class AuthController {
     public function logout() {
         unset($_SESSION['admin_user']);
         session_destroy();
-        header('Location: /admin/login');
+        header('Location: ' . url('/admin/login'));
         exit;
     }
 }
