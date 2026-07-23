@@ -33,11 +33,11 @@
         </div>
 
         <ul class="mobile-nav-menu">
-            <li><a href="/" class="<?= ($activePage ?? '') === 'home' ? 'active' : '' ?>"><i class="fa-solid fa-house me-2"></i> Ana Sayfa</a></li>
-            <li><a href="/hakkimizda" class="<?= ($activePage ?? '') === 'about' ? 'active' : '' ?>"><i class="fa-solid fa-address-card me-2"></i> Hakkımızda</a></li>
-            <li><a href="/hizmetler" class="<?= ($activePage ?? '') === 'services' ? 'active' : '' ?>"><i class="fa-solid fa-wrench me-2"></i> Hizmetlerimiz</a></li>
-            <li><a href="/galeri" class="<?= ($activePage ?? '') === 'gallery' ? 'active' : '' ?>"><i class="fa-solid fa-images me-2"></i> Galeri & Projeler</a></li>
-            <li><a href="/iletisim" class="<?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>"><i class="fa-solid fa-phone me-2"></i> İletişim</a></li>
+            <li><a href="<?= url('/') ?>" class="<?= ($activePage ?? '') === 'home' ? 'active' : '' ?>"><i class="fa-solid fa-house me-2"></i> Ana Sayfa</a></li>
+            <li><a href="<?= url('/hakkimizda') ?>" class="<?= ($activePage ?? '') === 'about' ? 'active' : '' ?>"><i class="fa-solid fa-address-card me-2"></i> Hakkımızda</a></li>
+            <li><a href="<?= url('/hizmetler') ?>" class="<?= ($activePage ?? '') === 'services' ? 'active' : '' ?>"><i class="fa-solid fa-wrench me-2"></i> Hizmetlerimiz</a></li>
+            <li><a href="<?= url('/galeri') ?>" class="<?= ($activePage ?? '') === 'gallery' ? 'active' : '' ?>"><i class="fa-solid fa-images me-2"></i> Galeri & Projeler</a></li>
+            <li><a href="<?= url('/iletisim') ?>" class="<?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>"><i class="fa-solid fa-phone me-2"></i> İletişim</a></li>
         </ul>
 
         <div class="mt-4 pt-3 border-top border-secondary">
@@ -50,7 +50,7 @@
     <!-- Main Navbar -->
     <nav class="navbar-custom">
         <div class="container d-flex justify-content-between align-items-center">
-            <a href="/" class="brand-logo">
+            <a href="<?= url('/') ?>" class="brand-logo">
                 <div class="brand-icon">
                     <i class="fa-solid fa-droplet"></i>
                 </div>
@@ -66,11 +66,11 @@
 
             <!-- Desktop Nav Links -->
             <ul class="nav-links d-none d-lg-flex" id="navLinksContainer">
-                <li><a href="/" class="nav-link-item <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">Ana Sayfa</a></li>
-                <li><a href="/hakkimizda" class="nav-link-item <?= ($activePage ?? '') === 'about' ? 'active' : '' ?>">Hakkımızda</a></li>
-                <li><a href="/hizmetler" class="nav-link-item <?= ($activePage ?? '') === 'services' ? 'active' : '' ?>">Hizmetlerimiz</a></li>
-                <li><a href="/galeri" class="nav-link-item <?= ($activePage ?? '') === 'gallery' ? 'active' : '' ?>">Galeri & Projeler</a></li>
-                <li><a href="/iletisim" class="nav-link-item <?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>">İletişim</a></li>
+                <li><a href="<?= url('/') ?>" class="nav-link-item <?= ($activePage ?? '') === 'home' ? 'active' : '' ?>">Ana Sayfa</a></li>
+                <li><a href="<?= url('/hakkimizda') ?>" class="nav-link-item <?= ($activePage ?? '') === 'about' ? 'active' : '' ?>">Hakkımızda</a></li>
+                <li><a href="<?= url('/hizmetler') ?>" class="nav-link-item <?= ($activePage ?? '') === 'services' ? 'active' : '' ?>">Hizmetlerimiz</a></li>
+                <li><a href="<?= url('/galeri') ?>" class="nav-link-item <?= ($activePage ?? '') === 'gallery' ? 'active' : '' ?>">Galeri & Projeler</a></li>
+                <li><a href="<?= url('/iletisim') ?>" class="nav-link-item <?= ($activePage ?? '') === 'contact' ? 'active' : '' ?>">İletişim</a></li>
             </ul>
 
             <div class="d-none d-lg-block">

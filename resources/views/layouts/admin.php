@@ -28,28 +28,28 @@
 
         <ul class="admin-nav">
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'dashboard' ? 'active' : '' ?>">
-                <a href="/admin/dashboard"><i class="fa-solid fa-chart-line"></i> Gösterge Paneli</a>
+                <a href="<?= url('/admin/dashboard') ?>"><i class="fa-solid fa-chart-line"></i> Gösterge Paneli</a>
             </li>
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'bookings' ? 'active' : '' ?>">
-                <a href="/admin/bookings"><i class="fa-solid fa-calendar-check"></i> Servis Talepleri</a>
+                <a href="<?= url('/admin/bookings') ?>"><i class="fa-solid fa-calendar-check"></i> Servis Talepleri</a>
             </li>
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'services' ? 'active' : '' ?>">
-                <a href="/admin/services"><i class="fa-solid fa-wrench"></i> Hizmet Yönetimi</a>
+                <a href="<?= url('/admin/services') ?>"><i class="fa-solid fa-wrench"></i> Hizmet Yönetimi</a>
             </li>
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'gallery' ? 'active' : '' ?>">
-                <a href="/admin/gallery"><i class="fa-solid fa-images"></i> Galeri Yönetimi</a>
+                <a href="<?= url('/admin/gallery') ?>"><i class="fa-solid fa-images"></i> Galeri Yönetimi</a>
             </li>
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'messages' ? 'active' : '' ?>">
-                <a href="/admin/messages"><i class="fa-solid fa-envelope"></i> Gelen Mesajlar</a>
+                <a href="<?= url('/admin/messages') ?>"><i class="fa-solid fa-envelope"></i> Gelen Mesajlar</a>
             </li>
             <li class="admin-nav-item <?= ($activeAdminPage ?? '') === 'settings' ? 'active' : '' ?>">
-                <a href="/admin/settings"><i class="fa-solid fa-gears"></i> Site & Hakkımızda Ayarları</a>
+                <a href="<?= url('/admin/settings') ?>"><i class="fa-solid fa-gears"></i> Site & Hakkımızda Ayarları</a>
             </li>
         </ul>
 
         <div class="mt-auto px-4 text-center pb-4">
-            <a href="/" target="_blank" class="btn btn-outline-light btn-sm w-100 mb-2"><i class="fa-solid fa-globe me-1"></i> Siteyi Görüntüle</a>
-            <a href="/admin/logout" class="btn btn-danger btn-sm w-100"><i class="fa-solid fa-right-from-bracket me-1"></i> Çıkış Yap</a>
+            <a href="<?= url('/') ?>" target="_blank" class="btn btn-outline-light btn-sm w-100 mb-2"><i class="fa-solid fa-globe me-1"></i> Siteyi Görüntüle</a>
+            <a href="<?= url('/admin/logout') ?>" class="btn btn-danger btn-sm w-100"><i class="fa-solid fa-right-from-bracket me-1"></i> Çıkış Yap</a>
         </div>
     </aside>
 

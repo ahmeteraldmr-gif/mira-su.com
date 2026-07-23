@@ -23,11 +23,18 @@ spl_autoload_register(function ($class) {
 // Initialize Database Connection & Tables
 \App\Database\Database::getConnection();
 
-// Global Asset Helper for Subfolder Deployments
-function asset(string $path): string {
+// Global URL & Asset Helpers for Subfolder Deployments
+function url(string $path = '/'): string {
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
     $base = rtrim($scriptDir, '/');
+    if ($path === '/' || $path === '') {
+        return $base !== '' ? $base : '/';
+    }
     return $base . '/' . ltrim($path, '/');
+}
+
+function asset(string $path): string {
+    return url($path);
 }
 
 // Robust URI Normalization for Subfolder & cPanel Deployments
@@ -72,5 +79,5 @@ if (isset($routes[$routeKey])) {
     $title = "404 Sayfa Bulunamadı - Miraç Su";
     $settings = \App\Models\Setting::getAll();
     require __DIR__ . '/../resources/views/layouts/app.php';
-    echo '<div class="container py-5 text-center my-5"><h1 class="display-3 font-weight-bold text-primary mb-3"><i class="fa-solid fa-water-ladder text-info"></i> 404</h1><p class="lead">Aradığınız sayfa bulunamadı veya kaldırılmış olabilir.</p><a href="/" class="btn btn-primary mt-3"><i class="fa-solid fa-house"></i> Ana Sayfaya Dön</a></div>';
+    echo '<div class="container py-5 text-center my-5"><h1 class="display-3 font-weight-bold text-primary mb-3"><i class="fa-solid fa-water-ladder text-info"></i> 404</h1><p class="lead">Aradığınız sayfa bulunamadı veya kaldırılmış olabilir.</p><a href="' . url('/') . '" class="btn btn-primary mt-3"><i class="fa-solid fa-house"></i> Ana Sayfaya Dön</a></div>';
 }

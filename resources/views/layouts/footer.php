@@ -82,22 +82,22 @@
                 <div class="col-lg-2 col-6">
                     <h5 class="footer-title">Hızlı Bağlantılar</h5>
                     <ul class="footer-links">
-                        <li><a href="/">Ana Sayfa</a></li>
-                        <li><a href="/hakkimizda">Hakkımızda</a></li>
-                        <li><a href="/hizmetler">Hizmetlerimiz</a></li>
-                        <li><a href="/galeri">Galeri & Projeler</a></li>
-                        <li><a href="/iletisim">İletişim</a></li>
+                        <li><a href="<?= url('/') ?>">Ana Sayfa</a></li>
+                        <li><a href="<?= url('/hakkimizda') ?>">Hakkımızda</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">Hizmetlerimiz</a></li>
+                        <li><a href="<?= url('/galeri') ?>">Galeri & Projeler</a></li>
+                        <li><a href="<?= url('/iletisim') ?>">İletişim</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-3 col-6">
                     <h5 class="footer-title">Hizmetlerimiz</h5>
                     <ul class="footer-links">
-                        <li><a href="/hizmetler">Su Kaçağı Tespiti</a></li>
-                        <li><a href="/hizmetler">Robotla Tıkanıklık Açma</a></li>
-                        <li><a href="/hizmetler">Petek & Kombi Yıkama</a></li>
-                        <li><a href="/hizmetler">Su Arıtma Montajı</a></li>
-                        <li><a href="/hizmetler">7/24 Acil Tesisatçı</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">Su Kaçağı Tespiti</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">Robotla Tıkanıklık Açma</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">Petek & Kombi Yıkama</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">Su Arıtma Montajı</a></li>
+                        <li><a href="<?= url('/hizmetler') ?>">7/24 Acil Tesisatçı</a></li>
                     </ul>
                 </div>
 
