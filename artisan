@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+$command = $argv[1] ?? 'help';
+
+if ($command === 'serve') {
+    $host = $argv[2] ?? '127.0.0.1:8000';
+    echo "Miraç Su Tesisatı - PHP Laravel Geliştirme Sunucusu Başlatılıyor...\n";
+    echo "Yerel Adres: http://{$host}\n";
+    echo "Yönetici Paneli: http://{$host}/admin\n";
+    echo "Durdurmak için Ctrl+C tuşlarına basın.\n\n";
+    passthru("php -S {$host} -t public");
+} else {
+    echo "Miraç Su Laravel CLI Yardımcısı\n";
+    echo "Kullanılabilir Komutlar:\n";
+    echo "  php artisan serve         -> Geliştirme sunucusunu başlatır (http://127.0.0.1:8000)\n";
+}

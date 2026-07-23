@@ -1,0 +1,10 @@
+# Database & sqlite
+database/database.sqlite
+
+# Temp files
+cookies.txt
+*.log
+
+# IDE & Editor files
+.idea/
+.vscode/

@@ -1,0 +1,185 @@
+/* Admin Panel Custom Theme */
+:root {
+    --admin-sidebar-bg: #0F172A;
+    --admin-sidebar-hover: #1E293B;
+    --admin-accent: #0EA5E9;
+    --admin-bg: #F1F5F9;
+    --admin-card: #FFFFFF;
+}
+
+body.admin-body {
+    background-color: var(--admin-bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #334155;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 270px;
+    background: var(--admin-sidebar-bg);
+    color: #94A3B8;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.admin-sidebar-brand {
+    padding: 0 24px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+}
+.admin-sidebar-brand span {
+    color: var(--admin-accent);
+}
+
+.admin-nav {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.admin-nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 24px;
+    color: #94A3B8;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.admin-nav-item a:hover, .admin-nav-item.active a {
+    background: var(--admin-sidebar-hover);
+    color: white;
+    border-left-color: var(--admin-accent);
+}
+
+.admin-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    background: white;
+    padding: 18px 32px;
+    border-bottom: 1px solid #E2E8F0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-main {
+    padding: 32px;
+    flex-grow: 1;
+}
+
+.stat-card-admin {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.stat-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--admin-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.table-custom {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid #E2E8F0;
+}
+
+.table-custom th {
+    background: #F8FAFC;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.table-custom td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+/* Mobile Responsive Admin Hamburger Drawer */
+@media (max-width: 991px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+    .admin-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100vh !important;
+        width: 280px !important;
+        z-index: 10000 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+        box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5) !important;
+    }
+    .admin-sidebar.show {
+        transform: translateX(0) !important;
+    }
+    .admin-sidebar-backdrop {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(15, 23, 42, 0.75) !important;
+        backdrop-filter: blur(5px) !important;
+        z-index: 9990 !important;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease !important;
+    }
+    .admin-sidebar-backdrop.show {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    .admin-nav {
+        display: block;
+        padding: 20px 0;
+    }
+    .admin-nav-item a {
+        padding: 14px 24px;
+        border-bottom: none;
+        border-left: 4px solid transparent;
+    }
+    .admin-nav-item.active a {
+        border-left-color: var(--admin-accent);
+    }
+    .admin-main {
+        padding: 20px 16px;
+    }
+}
