@@ -87,6 +87,7 @@
                         <li><a href="<?= url('/hizmetler') ?>">Hizmetlerimiz</a></li>
                         <li><a href="<?= url('/galeri') ?>">Galeri & Projeler</a></li>
                         <li><a href="<?= url('/iletisim') ?>">İletişim</a></li>
+                        <li><a href="<?= url('/admin') ?>" class="text-info fw-bold"><i class="fa-solid fa-user-gear me-1"></i> Yönetici Paneli</a></li>
                     </ul>
                 </div>
 
