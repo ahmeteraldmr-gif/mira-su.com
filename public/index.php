@@ -22,7 +22,7 @@ if (file_exists($envFile)) {
     }
 }
 
-function env(string $key, mixed $default = null): mixed {
+function env(string $key, $default = null) {
     $value = getenv($key);
     if ($value === false) {
         return $default;
