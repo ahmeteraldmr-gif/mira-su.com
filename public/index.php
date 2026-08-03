@@ -1,6 +1,14 @@
 <?php
 
-session_start();
+ob_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    @session_start();
+}
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 // Load .env Environment Configuration
 $envFile = __DIR__ . '/../.env';
@@ -41,12 +49,6 @@ function env(string $key, $default = null) {
     return $value;
 }
 
-if (env('APP_DEBUG', true) || isset($_GET['debug'])) {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-}
-
 // Require Composer / Framework Autoloader
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -68,9 +70,9 @@ function asset(string $path): string {
 }
 
 // Robust URI Normalization for Subfolder & cPanel Deployments
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-$rawUri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-$scriptName = urldecode($_SERVER['SCRIPT_NAME']);
+$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$rawUri = urldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH));
+$scriptName = urldecode($_SERVER['SCRIPT_NAME'] ?? '/index.php');
 $scriptDir = dirname($scriptName);
 
 // Clean up scriptDir for windows backslashes
