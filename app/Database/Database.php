@@ -10,18 +10,31 @@ class Database {
 
     public static function getConnection(): PDO {
         if (self::$instance === null) {
-            $dbPath = __DIR__ . '/../../database/database.sqlite';
-            $dbDir = dirname($dbPath);
-            if (!file_exists($dbDir)) {
-                mkdir($dbDir, 0777, true);
-            }
+            $connection = env('DB_CONNECTION', 'mysql');
 
             try {
-                self::$instance = new PDO("sqlite:" . $dbPath);
+                if ($connection === 'mysql') {
+                    $host = env('DB_HOST', '127.0.0.1');
+                    $port = env('DB_PORT', '3306');
+                    $dbname = env('DB_DATABASE', 'miracsutesisat_tesisat');
+                    $username = env('DB_USERNAME', 'miracsutesisat_admin');
+                    $password = env('DB_PASSWORD', '');
+
+                    $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+                    self::$instance = new PDO($dsn, $username, $password);
+                } else {
+                    $dbPath = __DIR__ . '/../../database/database.sqlite';
+                    $dbDir = dirname($dbPath);
+                    if (!file_exists($dbDir)) {
+                        mkdir($dbDir, 0777, true);
+                    }
+                    self::$instance = new PDO("sqlite:" . $dbPath);
+                }
+
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                
-                self::initSchema();
+
+                self::initSchema($connection);
             } catch (PDOException $e) {
                 die("Veritabanı bağlantı hatası: " . $e->getMessage());
             }
@@ -29,82 +42,92 @@ class Database {
         return self::$instance;
     }
 
-    private static function initSchema(): void {
+    private static function initSchema(string $connection): void {
         $db = self::$instance;
+
+        if ($connection === 'mysql') {
+            $pk = "INT AUTO_INCREMENT PRIMARY KEY";
+            $dt = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP";
+        } else {
+            $pk = "INTEGER PRIMARY KEY AUTOINCREMENT";
+            $dt = "DATETIME DEFAULT CURRENT_TIMESTAMP";
+        }
 
         // Users table
         $db->exec("CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            name TEXT NOT NULL,
-            role TEXT DEFAULT 'admin',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            id {$pk},
+            username VARCHAR(191) UNIQUE NOT NULL,
+            password_hash VARCHAR(255) NOT NULL,
+            name VARCHAR(191) NOT NULL,
+            role VARCHAR(50) DEFAULT 'admin',
+            created_at {$dt}
         )");
 
         // Services table
         $db->exec("CREATE TABLE IF NOT EXISTS services (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            slug TEXT UNIQUE NOT NULL,
+            id {$pk},
+            title VARCHAR(191) NOT NULL,
+            slug VARCHAR(191) UNIQUE NOT NULL,
             summary TEXT,
             description TEXT,
-            icon TEXT,
-            price TEXT,
-            is_featured INTEGER DEFAULT 1,
-            is_active INTEGER DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            icon VARCHAR(191),
+            price VARCHAR(191),
+            is_featured INT DEFAULT 1,
+            is_active INT DEFAULT 1,
+            created_at {$dt}
         )");
 
         // Bookings table
         $db->exec("CREATE TABLE IF NOT EXISTS bookings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            service_name TEXT NOT NULL,
-            address TEXT NOT NULL,
+            id {$pk},
+            name VARCHAR(191) NOT NULL,
+            phone VARCHAR(191) NOT NULL,
+            service_name VARCHAR(191),
+            address TEXT,
             notes TEXT,
-            status TEXT DEFAULT 'Bekliyor',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            status VARCHAR(50) DEFAULT 'Bekliyor',
+            created_at {$dt}
         )");
 
-        // Contact Messages table
+        // Gallery table
+        $db->exec("CREATE TABLE IF NOT EXISTS gallery_items (
+            id {$pk},
+            title VARCHAR(191) NOT NULL,
+            category VARCHAR(50) NOT NULL,
+            image_url VARCHAR(255) NOT NULL,
+            description TEXT,
+            created_at {$dt}
+        )");
+
+        // Messages table
         $db->exec("CREATE TABLE IF NOT EXISTS contact_messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT,
-            phone TEXT NOT NULL,
-            subject TEXT,
-            message TEXT NOT NULL,
-            is_read INTEGER DEFAULT 0,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            id {$pk},
+            name VARCHAR(191) NOT NULL,
+            phone VARCHAR(191) NOT NULL,
+            email VARCHAR(191),
+            subject VARCHAR(191),
+            message TEXT,
+            is_read INT DEFAULT 0,
+            created_at {$dt}
         )");
 
         // Settings table
         $db->exec("CREATE TABLE IF NOT EXISTS settings (
-            key TEXT PRIMARY KEY,
-            value TEXT
+            id {$pk},
+            setting_key VARCHAR(191) UNIQUE NOT NULL,
+            setting_value TEXT,
+            updated_at {$dt}
         )");
 
-        // Gallery Items table
-        $db->exec("CREATE TABLE IF NOT EXISTS gallery_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            category TEXT DEFAULT 'kacak',
-            image_url TEXT NOT NULL,
-            description TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )");
-
-        self::seedData();
+        self::seedDefaults();
     }
 
-    private static function seedData(): void {
+    private static function seedDefaults(): void {
         $db = self::$instance;
 
-        // Admin User (admin / password123)
-        $userCount = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
-        if ($userCount == 0) {
+        // Check if admin user exists
+        $stmt = $db->query("SELECT COUNT(*) FROM users");
+        if ((int)$stmt->fetchColumn() === 0) {
             $stmt = $db->prepare("INSERT INTO users (username, password_hash, name, role) VALUES (?, ?, ?, ?)");
             $stmt->execute([
                 'admin',
@@ -114,107 +137,59 @@ class Database {
             ]);
         }
 
-        // Default Services
-        $serviceCount = $db->query("SELECT COUNT(*) FROM services")->fetchColumn();
-        if ($serviceCount == 0) {
+        // Check if services exist
+        $stmt = $db->query("SELECT COUNT(*) FROM services");
+        if ((int)$stmt->fetchColumn() === 0) {
             $services = [
-                [
-                    'title' => 'Robotla Su Kaçağı Tespiti',
-                    'slug' => 'robotla-su-kacagi-tespiti',
-                    'summary' => 'Termal kamera ve akustik dinleme cihazları ile kırmadan dökmeden nokta atışı su kaçağı tespiti.',
-                    'description' => 'Evinizde veya iş yerinizde fayansları kırmadan, duvarlara zarar vermeden son teknoloji Alman akustik dinleme ve termal görüntüleme ekipmanlarımızla gizli su kaçaklarını %100 kesinlikle tespit ediyoruz.',
-                    'icon' => 'fa-magnifying-glass-location',
-                    'price' => 'Sabit Fiyat Garantisi',
-                    'is_featured' => 1
-                ],
-                [
-                    'title' => 'Tıkanıklık Açma & Kanal Temizleme',
-                    'slug' => 'tikaniklik-acma-kanal-temizleme',
-                    'summary' => 'Mutfak, banyo, tuvalet ve lavabo tıkanıklıklarını kameralı robot sistemlerle anında açıyoruz.',
-                    'description' => 'Mutfak gideri, tuvalet veya ana rögarlarda oluşan tıkanıklıkları yüksek basınçlı yıkama ve döner başlıklı robot yılan kameralarla kırmadan kısa sürede açıp temizliyoruz.',
-                    'icon' => 'fa-screwdriver-wrench',
-                    'price' => 'Uygun Fiyatlı Servis',
-                    'is_featured' => 1
-                ],
-                [
-                    'title' => 'Petek Temizliği & Kombi Bakımı',
-                    'slug' => 'petek-temizligi-kombi-bakimi',
-                    'summary' => 'Özel kimyasal ve çift yönlü tesisat yıkama makinesi ile ısınmayan petekleri temizliyoruz.',
-                    'description' => 'Peteklerinizde biriken çamur, kireç ve korozyonu özel yıkama robotlarımız ve koruyucu ilaçlarla temizleyerek yakıt tasarrufunuzu %30 artırıyoruz.',
-                    'icon' => 'fa-fire-flame-curved',
-                    'price' => '%30 Yakıt Tasarrufu',
-                    'is_featured' => 1
-                ],
-                [
-                    'title' => 'Su Arıtma Montajı & Filtre Değişimi',
-                    'slug' => 'su-aritma-montaji-filtre-degisimi',
-                    'summary' => 'Alkalin PH değerli, 6 aşamalı pompalı evsel ve endüstriyel su arıtma sistemleri montajı.',
-                    'description' => 'Musluğunuzdan güvenle ve lezzetle içebileceğiniz premium su arıtma sistemlerinin satışı, yerinde montajı, periyodik filtre değişimi ve bakımı yapılmaktadır.',
-                    'icon' => 'fa-filter',
-                    'price' => 'Orijinal Filtreler',
-                    'is_featured' => 1
-                ],
-                [
-                    'title' => '7/24 Acil Sıhhi Tesisat & Tamirat',
-                    'slug' => 'acil-sahhi-tesisat-tamirat',
-                    'summary' => 'Patlayan boru, vana arızası, batarya değişimi ve acil su baskınlarına 30 dakikada müdahale.',
-                    'description' => 'Gece veya gündüz fark etmeksizin acil tesisat arızalarında uzman mobil ekibimiz 30 dakika içinde kapınızda olur. Tüm tamirat işleri 2 yıl garantilidir.',
-                    'icon' => 'fa-clock-rotate-left',
-                    'price' => '7/24 Hızlı Mobil Servis',
-                    'is_featured' => 1
-                ],
-                [
-                    'title' => 'Gömme Rezervuar & Vitrifiye Montajı',
-                    'slug' => 'gomme-rezervuar-vitrifiye-montaji',
-                    'summary' => 'Grohe, Geberit ve Serel gömme rezervuar tamiri, klozet ve batarya montaj hizmetleri.',
-                    'description' => 'Su kaçıran gömme rezervuar iç takımlarının orijinal yedek parça ile tamiri, klozet, lavabo ve duş seti montaj uygulamalarımız estetik işçilikle yapılır.',
-                    'icon' => 'fa-toilet',
-                    'price' => 'Garantili İşçilik',
-                    'is_featured' => 0
-                ]
+                ['Kırmadan Robotla Su Kaçağı Tespiti', 'kırmadan-robotla-su-kacagi-tespiti', 'Termal kamera ve akustik dinleme cihazları ile kırmadan noktasal su kaçağı bulma.', 'Evinizde veya iş yerinizde fayans kırmadan, duvar bozmadan son teknoloji altyapı cihazlarımızla nokta atışı su kaçağı tespiti yapıyoruz.', 'fa-video', '500 TL\'den başlayan fiyatlarla'],
+                ['Kameralı Robotla Tıkanıklık Açma', 'kamerali-robotla-tikaniklik-acma', 'Pimaş, lavabo, tuvalet ve kanal tıkanıklıklarını kameralı robot ile açma.', 'Tıkanan gider hatlarınızı özel çelik yaylı ve HD kameralı robot sistemimizle kırmadan 15 dakikada temizleyip açıyoruz.', 'fa-bore-hole', '400 TL\'den başlayan fiyatlarla'],
+                ['Petek & Kombi Tesisat Temizliği', 'petek-kombi-tesisat-temizligi', 'Özel ilaçlı yıkama makineleri ile %30 yakıt tasarruflu petek temizliği.', 'Isınmayan radyatör ve çamurlanan kombi tesisatlarınızı basınçlı ilaçlı makinelerimizle yıkayarak ilk günkü verimine kavuşturuyoruz.', 'fa-fire-flame-curved', '450 TL\'den başlayan fiyatlarla'],
+                ['Su Arıtma Cihazı Montajı & Bakımı', 'su-aritma-cihazi-montaji-bakimi', 'Evsel ve endüstriyel su arıtma filtre değişimi, bakım ve sıfır kurulum hizmetleri.', 'Sağlıklı ve lezzetli içme suyu için en kaliteli 5 aşamalı filtre değişimi ve arıtma cihazı montaj servisimiz 7/24 hizmetinizde.', 'fa-filter', '350 TL\'den başlayan fiyatlarla'],
+                ['7/24 Acil Sıhhi Tesisat Tamiratı', '724-acil-sihhi-tesisat-tamirati', 'Musluk, batarya, vana, sifon tamiri ve acil patlayan boru müdahaleleri.', 'Gece gündüz demeden 30 dakikada adresinizde olan acil mobil servis aracımızla tüm sıhhi tesisat arızalarına müdahale ediyoruz.', 'fa-wrench', 'Teklif Alınız']
             ];
 
-            $stmt = $db->prepare("INSERT INTO services (title, slug, summary, description, icon, price, is_featured) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $db->prepare("INSERT INTO services (title, slug, summary, description, icon, price) VALUES (?, ?, ?, ?, ?, ?)");
             foreach ($services as $s) {
-                $stmt->execute([$s['title'], $s['slug'], $s['summary'], $s['description'], $s['icon'], $s['price'], $s['is_featured']]);
+                $stmt->execute($s);
             }
         }
 
-        // Default Gallery Items
-        $galleryCount = $db->query("SELECT COUNT(*) FROM gallery_items")->fetchColumn();
-        if ($galleryCount == 0) {
-            $items = [
-                ['title' => 'Akustik Dinleme ile Noktasal Kaçak Tespiti', 'category' => 'kacak', 'image_url' => '/images/gallery_real_1.jpg', 'description' => 'Frekans dinleme kulaklığı ve zemin sensörü ile kırmadan noktasal su kaçağı tespiti.'],
-                ['title' => 'Kameralı Kanal & Gider İnceleme Robotu', 'category' => 'robot', 'image_url' => '/images/gallery_real_2.jpg', 'description' => 'Yüksek çözünürlüklü dijital ekranlı makara sistemi ile pimaş boru içi görüntüleme.'],
-                ['title' => 'PowerMaxx Leak Detector Seti', 'category' => 'kacak', 'image_url' => '/images/gallery_real_3.jpg', 'description' => 'Özel taşıma çantasında akustik kulaklık ve frekans paneli ile sıfır hata tespiti.'],
-                ['title' => 'Rothenberger ROSCAN i4000 Termal Kamera', 'category' => 'termal', 'image_url' => '/images/gallery_real_4.jpg', 'description' => 'Sıcak ve soğuk su hatlarındaki kaçakları duvar arkasından gösteren Alman termal kamerası.'],
-                ['title' => 'Işıklı Boru İçi Görüntüleme Başlığı', 'category' => 'robot', 'image_url' => '/images/gallery_real_5.jpg', 'description' => 'Gider hatlarına gönderilen su geçirmez LED aydınlatmalı kamera robota ait başlık.']
+        // Check if gallery items exist
+        $stmt = $db->query("SELECT COUNT(*) FROM gallery_items");
+        if ((int)$stmt->fetchColumn() === 0) {
+            $gallery = [
+                ['Işıklı Boru İçi Görüntüleme Başlığı', 'robot', '/images/gallery_real_1.jpg', 'Gider hatlarına gönderilen su geçirmez LED aydınlatmalı kamera robota ait başlık.'],
+                ['Rothenberger ROSCAN i4000 Termal Kamera', 'termal', '/images/gallery_real_2.jpg', 'Sıcak ve soğuk su hatlarındaki kaçakları duvar arkasından gösteren Alman termal kamerası.'],
+                ['PowerMaxx Leak Detector Seti', 'kacak', '/images/gallery_real_3.jpg', 'Özel taşıma çantasında akustik kulaklık ve frekans paneli ile sıfır hata tespiti.'],
+                ['Kameralı Kanal & Gider İnceleme Robotu', 'robot', '/images/gallery_real_4.jpg', 'Tıkanıklığın tam yerini ve kırık boruları ekranda canlı gösteren tespit robotumuz.'],
+                ['Akustik Dinleme ile Noktasal Kaçak Tespiti', 'kacak', '/images/gallery_real_5.jpg', 'Zemin altındaki sızıntı seslerini yükselterek 1 santim yanılma olmadan kaçak tespiti.']
             ];
+
             $stmt = $db->prepare("INSERT INTO gallery_items (title, category, image_url, description) VALUES (?, ?, ?, ?)");
-            foreach ($items as $item) {
-                $stmt->execute([$item['title'], $item['category'], $item['image_url'], $item['description']]);
+            foreach ($gallery as $g) {
+                $stmt->execute($g);
             }
         }
 
-        // Default Settings
-        $settingCount = $db->query("SELECT COUNT(*) FROM settings")->fetchColumn();
-        if ($settingCount == 0) {
+        // Check if settings exist
+        $stmt = $db->query("SELECT COUNT(*) FROM settings");
+        if ((int)$stmt->fetchColumn() === 0) {
             $settings = [
                 'site_name' => 'Miraç Su Tesisatı & Arıtma Sistemleri',
                 'site_phone' => '0532 000 00 00',
                 'site_whatsapp' => '905320000000',
-                'site_emergency' => '0850 000 00 00',
-                'site_email' => 'info@miracsu.com',
-                'site_address' => 'Merkez Mahallesi, Tesisatçılar Cad. No:45 Ada / İstanbul',
-                'working_hours' => '7 Gün 24 Saat Acil Servis Hizmeti',
-                'about_story' => 'Miraç Su Tesisatı & Arıtma Sistemleri, Ada ve çevre bölgelerde sıhhi tesisat sektörünün eksikliklerini ve müşteri mağduriyetlerini gidermek amacıyla kurulmuştur. Evlerde kırmadan dökmeden arıza tespiti yapabilen Alman üretimi teknolojik ekipman yatırımımız ile bölgenin lider tesisat firması haline geldik.',
-                'about_mission' => 'Teknolojik cihazlarla kırmadan %100 kesin çözümler sunarak müşteri memnuniyetini en üst seviyede tutmak.',
-                'about_vision' => 'Bölgenin en güvenilir, en hızlı ve yenilikçi su tesisatı & arıtma markası konumunu sürdürmek.',
+                'site_emergency' => '0532 000 00 00',
+                'site_email' => 'info@miracsutesisat.com',
+                'site_address' => 'Ada / İstanbul ve Tüm Çevre İlçeleri',
+                'working_hours' => '7/24 Kesintisiz Mobil Servis Hizmeti',
+                'about_story' => 'Miraç Su Tesisatı & Arıtma Sistemleri olarak 15 yılı aşkın süredir son teknoloji termal kameralar, akustik dinleme cihazları ve robotik kanal açma sistemlerimizle hizmet vermekteyiz.',
+                'about_mission' => 'Müşterilerimize ev ve iş yerlerinde hiçbir yeri kırmadan dökmeden en ekonomik ve %100 garantili tesisat çözümleri sunmak.',
+                'about_vision' => 'Bölgemizin en güvenilir, teknolojik ve hızlı acil tesisat servisi olmaya devam etmek.',
                 'facebook_url' => 'https://facebook.com',
                 'instagram_url' => 'https://instagram.com'
             ];
 
-            $stmt = $db->prepare("INSERT INTO settings (key, value) VALUES (?, ?)");
+            $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
             foreach ($settings as $k => $v) {
                 $stmt->execute([$k, $v]);
             }
