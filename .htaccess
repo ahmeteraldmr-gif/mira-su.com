@@ -1,9 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # If request is not already for public folder
+    # Prevent loop if DocumentRoot is already public or during internal redirect
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
     RewriteCond %{REQUEST_URI} !^/public/
-
-    # Rewrite all requests to public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
