@@ -32,12 +32,21 @@ class GalleryAdminController {
             if (!empty($_FILES['image_file']['name'])) {
                 $file = $_FILES['image_file'];
                 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    $newName = 'gallery_upload_' . time() . '.' . $ext;
-                    $targetPath = __DIR__ . '/../../../public/images/' . $newName;
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $imgDir = __DIR__ . '/../../../public/images';
+                    if (!file_exists($imgDir)) {
+                        @mkdir($imgDir, 0777, true);
+                    }
+                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                    $targetPath = $imgDir . '/' . $newName;
+
                     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
                         $imageUrl = '/images/' . $newName;
+                    } else {
+                        $_SESSION['admin_error'] = 'Dosya yüklenemedi. Lütfen public/images klasör izinlerini (775/777) kontrol edin.';
                     }
+                } else {
+                    $_SESSION['admin_error'] = 'Geçersiz dosya formatı. Lütfen JPG, PNG veya WEBP yükleyin.';
                 }
             }
 
@@ -48,7 +57,7 @@ class GalleryAdminController {
                     'image_url' => $imageUrl,
                     'description' => $description
                 ]);
-                $_SESSION['admin_flash'] = 'Galeriye yeni fotoğraf eklendi.';
+                $_SESSION['admin_flash'] = 'Galeriye yeni fotoğraf başarıyla eklendi.';
             }
         }
         header('Location: ' . url('/admin/gallery'));
@@ -67,12 +76,21 @@ class GalleryAdminController {
             if (!empty($_FILES['image_file']['name'])) {
                 $file = $_FILES['image_file'];
                 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    $newName = 'gallery_upload_' . time() . '.' . $ext;
-                    $targetPath = __DIR__ . '/../../../public/images/' . $newName;
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $imgDir = __DIR__ . '/../../../public/images';
+                    if (!file_exists($imgDir)) {
+                        @mkdir($imgDir, 0777, true);
+                    }
+                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                    $targetPath = $imgDir . '/' . $newName;
+
                     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
                         $imageUrl = '/images/' . $newName;
+                    } else {
+                        $_SESSION['admin_error'] = 'Dosya yüklenemedi. Lütfen public/images klasör izinlerini kontrol edin.';
                     }
+                } else {
+                    $_SESSION['admin_error'] = 'Geçersiz dosya formatı. Lütfen JPG, PNG veya WEBP yükleyin.';
                 }
             }
 
@@ -83,7 +101,9 @@ class GalleryAdminController {
                     'image_url' => $imageUrl,
                     'description' => $description
                 ]);
-                $_SESSION['admin_flash'] = 'Fotoğraf bilgileri güncellendi.';
+                if (empty($_SESSION['admin_error'])) {
+                    $_SESSION['admin_flash'] = 'Fotoğraf bilgileri başarıyla güncellendi.';
+                }
             }
         }
         header('Location: ' . url('/admin/gallery'));

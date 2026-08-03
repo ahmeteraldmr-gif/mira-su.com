@@ -74,3 +74,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             <?php endif; ?>
+            <?php if (!empty($_SESSION['admin_error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i> <?= $_SESSION['admin_error']; unset($_SESSION['admin_error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
