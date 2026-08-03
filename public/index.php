@@ -55,7 +55,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // Initialize Database Connection & Tables
 \App\Database\Database::getConnection();
 
-// Global URL & Asset Helpers for Subfolder Deployments
+// Global URL & Asset Helpers for Subfolder & Root Deployments
 function url(string $path = '/'): string {
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
     $base = rtrim($scriptDir, '/');
@@ -66,7 +66,22 @@ function url(string $path = '/'): string {
 }
 
 function asset(string $path): string {
-    return url($path);
+    $pathClean = ltrim($path, '/');
+    $rootDir = __DIR__ . '/..';
+    
+    // Check if running directly inside public/
+    if (file_exists(__DIR__ . '/' . $pathClean)) {
+        $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+        $base = rtrim($scriptDir, '/');
+        return ($base !== '' ? $base : '') . '/' . $pathClean;
+    }
+    
+    // Check if running from root directory
+    if (file_exists($rootDir . '/public/' . $pathClean)) {
+        return '/public/' . $pathClean;
+    }
+    
+    return '/' . $pathClean;
 }
 
 // Robust URI Normalization for Subfolder & cPanel Deployments
