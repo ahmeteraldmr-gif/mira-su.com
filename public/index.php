@@ -41,6 +41,12 @@ function env(string $key, mixed $default = null): mixed {
     return $value;
 }
 
+if (env('APP_DEBUG', true) || isset($_GET['debug'])) {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
+
 // Require Composer / Framework Autoloader
 require_once __DIR__ . '/../vendor/autoload.php';
 

@@ -8,12 +8,14 @@ use PDOException;
 class Database {
     private static ?PDO $instance = null;
 
-    public static function getConnection(): PDO {
+    public static function getConnection(): ?PDO {
         if (self::$instance === null) {
             $connection = env('DB_CONNECTION', 'mysql');
+            $lastException = null;
 
-            try {
-                if ($connection === 'mysql') {
+            // Attempt 1: MySQL
+            if ($connection === 'mysql') {
+                try {
                     $host = env('DB_HOST', '127.0.0.1');
                     $port = env('DB_PORT', '3306');
                     $dbname = env('DB_DATABASE', 'miracsutesisat_tesisat');
@@ -25,32 +27,35 @@ class Database {
                     self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                     self::initSchema('mysql');
-                } else {
-                    $dbPath = __DIR__ . '/../../database/database.sqlite';
-                    $dbDir = dirname($dbPath);
-                    if (!file_exists($dbDir)) {
-                        mkdir($dbDir, 0777, true);
-                    }
-                    self::$instance = new PDO("sqlite:" . $dbPath);
-                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                    self::initSchema('sqlite');
+                    return self::$instance;
+                } catch (\Throwable $e) {
+                    $lastException = $e;
                 }
-            } catch (PDOException $e) {
-                // If MySQL fails (e.g. invalid password in .env), fall back gracefully to SQLite
-                try {
-                    $dbPath = __DIR__ . '/../../database/database.sqlite';
-                    $dbDir = dirname($dbPath);
-                    if (!file_exists($dbDir)) {
-                        mkdir($dbDir, 0777, true);
-                    }
-                    self::$instance = new PDO("sqlite:" . $dbPath);
-                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                    self::initSchema('sqlite');
-                } catch (PDOException $e2) {
-                    die("Veritabanı bağlantı hatası: " . $e->getMessage());
+            }
+
+            // Attempt 2: Fallback to SQLite
+            try {
+                $dbPath = __DIR__ . '/../../database/database.sqlite';
+                $dbDir = dirname($dbPath);
+                if (!file_exists($dbDir)) {
+                    @mkdir($dbDir, 0777, true);
                 }
+                self::$instance = new PDO("sqlite:" . $dbPath);
+                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                self::initSchema('sqlite');
+                return self::$instance;
+            } catch (\Throwable $e2) {
+                http_response_code(200);
+                echo '<div style="font-family:sans-serif;padding:30px;max-width:650px;margin:60px auto;background:#fff3cd;color:#856404;border:1px solid #ffeeba;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">';
+                echo '<h2 style="margin-top:0;color:#856404;">⚠️ Veritabanı Bağlantı Uyarısı</h2>';
+                echo '<p style="font-size:15px;line-height:1.6;">Veritabanına bağlanırken bir sorun oluştu. Lütfen <strong>.env</strong> dosyanızdaki MySQL veritabanı şifrenizi veya cPanel PHP eklentilerinden <strong>pdo_mysql</strong> / <strong>pdo_sqlite</strong> modüllerini kontrol ediniz.</p>';
+                if ($lastException) {
+                    echo '<div style="background:#fff;padding:12px;border-radius:6px;font-family:monospace;font-size:13px;color:#c53030;overflow-x:auto;margin-top:15px;"><strong>MySQL Hatası:</strong> ' . htmlspecialchars($lastException->getMessage()) . '</div>';
+                }
+                echo '<div style="background:#fff;padding:12px;border-radius:6px;font-family:monospace;font-size:13px;color:#c53030;overflow-x:auto;margin-top:10px;"><strong>SQLite Hatası:</strong> ' . htmlspecialchars($e2->getMessage()) . '</div>';
+                echo '</div>';
+                exit;
             }
         }
         return self::$instance;
