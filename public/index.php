@@ -67,20 +67,13 @@ function url(string $path = '/'): string {
 
 function asset(string $path): string {
     $pathClean = ltrim($path, '/');
-    $rootDir = __DIR__ . '/..';
-    
-    // Check if running directly inside public/
-    if (file_exists(__DIR__ . '/' . $pathClean)) {
-        $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
-        $base = rtrim($scriptDir, '/');
-        return ($base !== '' ? $base : '') . '/' . $pathClean;
-    }
-    
-    // Check if running from root directory
-    if (file_exists($rootDir . '/public/' . $pathClean)) {
+    $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
+
+    // If running via root index.php proxy (SCRIPT_NAME is /index.php)
+    if (strpos($scriptName, '/public/') === false) {
         return '/public/' . $pathClean;
     }
-    
+
     return '/' . $pathClean;
 }
 
