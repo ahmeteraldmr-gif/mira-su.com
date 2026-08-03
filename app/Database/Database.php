@@ -22,6 +22,9 @@ class Database {
 
                     $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
                     self::$instance = new PDO($dsn, $username, $password);
+                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                    self::initSchema('mysql');
                 } else {
                     $dbPath = __DIR__ . '/../../database/database.sqlite';
                     $dbDir = dirname($dbPath);
@@ -29,14 +32,25 @@ class Database {
                         mkdir($dbDir, 0777, true);
                     }
                     self::$instance = new PDO("sqlite:" . $dbPath);
+                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                    self::initSchema('sqlite');
                 }
-
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-                self::initSchema($connection);
             } catch (PDOException $e) {
-                die("Veritabanı bağlantı hatası: " . $e->getMessage());
+                // If MySQL fails (e.g. invalid password in .env), fall back gracefully to SQLite
+                try {
+                    $dbPath = __DIR__ . '/../../database/database.sqlite';
+                    $dbDir = dirname($dbPath);
+                    if (!file_exists($dbDir)) {
+                        mkdir($dbDir, 0777, true);
+                    }
+                    self::$instance = new PDO("sqlite:" . $dbPath);
+                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                    self::initSchema('sqlite');
+                } catch (PDOException $e2) {
+                    die("Veritabanı bağlantı hatası: " . $e->getMessage());
+                }
             }
         }
         return self::$instance;
