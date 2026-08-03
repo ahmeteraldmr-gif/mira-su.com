@@ -33,17 +33,32 @@ class GalleryAdminController {
                 $file = $_FILES['image_file'];
                 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $imgDir = __DIR__ . '/../../../public/images';
-                    if (!file_exists($imgDir)) {
-                        @mkdir($imgDir, 0777, true);
-                    }
-                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
-                    $targetPath = $imgDir . '/' . $newName;
+                    $possibleDirs = [
+                        __DIR__ . '/../../../public/images',
+                        dirname($_SERVER['SCRIPT_FILENAME'] ?? '') . '/images',
+                        dirname($_SERVER['SCRIPT_FILENAME'] ?? '') . '/public/images'
+                    ];
 
-                    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-                        $imageUrl = '/images/' . $newName;
-                    } else {
-                        $_SESSION['admin_error'] = 'Dosya yüklenemedi. Lütfen public/images klasör izinlerini (775/777) kontrol edin.';
+                    $uploaded = false;
+                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
+
+                    foreach ($possibleDirs as $imgDir) {
+                        if (!file_exists($imgDir)) {
+                            @mkdir($imgDir, 0777, true);
+                        }
+                        @chmod($imgDir, 0777);
+
+                        $targetPath = $imgDir . '/' . $newName;
+                        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
+                            @chmod($targetPath, 0644);
+                            $imageUrl = '/images/' . $newName;
+                            $uploaded = true;
+                            break;
+                        }
+                    }
+
+                    if (!$uploaded) {
+                        $_SESSION['admin_error'] = 'Dosya sunucuya yazılamadı. Lütfen SSH terminalinde "chmod -R 777 public/images" çalıştırın.';
                     }
                 } else {
                     $_SESSION['admin_error'] = 'Geçersiz dosya formatı. Lütfen JPG, PNG veya WEBP yükleyin.';
@@ -57,7 +72,9 @@ class GalleryAdminController {
                     'image_url' => $imageUrl,
                     'description' => $description
                 ]);
-                $_SESSION['admin_flash'] = 'Galeriye yeni fotoğraf başarıyla eklendi.';
+                if (empty($_SESSION['admin_error'])) {
+                    $_SESSION['admin_flash'] = 'Galeriye yeni fotoğraf başarıyla eklendi.';
+                }
             }
         }
         header('Location: ' . url('/admin/gallery'));
@@ -77,17 +94,32 @@ class GalleryAdminController {
                 $file = $_FILES['image_file'];
                 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $imgDir = __DIR__ . '/../../../public/images';
-                    if (!file_exists($imgDir)) {
-                        @mkdir($imgDir, 0777, true);
-                    }
-                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
-                    $targetPath = $imgDir . '/' . $newName;
+                    $possibleDirs = [
+                        __DIR__ . '/../../../public/images',
+                        dirname($_SERVER['SCRIPT_FILENAME'] ?? '') . '/images',
+                        dirname($_SERVER['SCRIPT_FILENAME'] ?? '') . '/public/images'
+                    ];
 
-                    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-                        $imageUrl = '/images/' . $newName;
-                    } else {
-                        $_SESSION['admin_error'] = 'Dosya yüklenemedi. Lütfen public/images klasör izinlerini kontrol edin.';
+                    $uploaded = false;
+                    $newName = 'gallery_' . time() . '_' . rand(100, 999) . '.' . $ext;
+
+                    foreach ($possibleDirs as $imgDir) {
+                        if (!file_exists($imgDir)) {
+                            @mkdir($imgDir, 0777, true);
+                        }
+                        @chmod($imgDir, 0777);
+
+                        $targetPath = $imgDir . '/' . $newName;
+                        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
+                            @chmod($targetPath, 0644);
+                            $imageUrl = '/images/' . $newName;
+                            $uploaded = true;
+                            break;
+                        }
+                    }
+
+                    if (!$uploaded) {
+                        $_SESSION['admin_error'] = 'Dosya sunucuya yazılamadı. Lütfen SSH terminalinde "chmod -R 777 public/images" çalıştırın.';
                     }
                 } else {
                     $_SESSION['admin_error'] = 'Geçersiz dosya formatı. Lütfen JPG, PNG veya WEBP yükleyin.';
