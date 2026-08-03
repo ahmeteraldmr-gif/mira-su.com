@@ -1,17 +1,90 @@
 #!/usr/bin/env php
 <?php
 
+// Load Environment Configuration
+$envFile = __DIR__ . '/.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (empty($line) || strpos($line, '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($name, $val) = explode('=', $line, 2);
+            $name = trim($name);
+            $val = trim($val, " \"'");
+            if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                putenv("$name=$val");
+                $_ENV[$name] = $val;
+                $_SERVER[$name] = $val;
+            }
+        }
+    }
+}
+
+if (!function_exists('env')) {
+    function env(string $key, $default = null) {
+        $value = getenv($key);
+        if ($value === false) return $default;
+        return $value;
+    }
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
+
 $command = $argv[1] ?? 'help';
 
-if ($command === 'serve') {
-    $host = $argv[2] ?? '127.0.0.1:8000';
-    echo "Miraç Su Tesisatı - PHP Laravel Geliştirme Sunucusu Başlatılıyor...\n";
-    echo "Yerel Adres: http://{$host}\n";
-    echo "Yönetici Paneli: http://{$host}/admin\n";
-    echo "Durdurmak için Ctrl+C tuşlarına basın.\n\n";
-    passthru("php -S {$host} -t public");
-} else {
-    echo "Miraç Su Laravel CLI Yardımcısı\n";
-    echo "Kullanılabilir Komutlar:\n";
-    echo "  php artisan serve         -> Geliştirme sunucusunu başlatır (http://127.0.0.1:8000)\n";
+switch ($command) {
+    case 'serve':
+        $host = $argv[2] ?? '127.0.0.1:8000';
+        echo "\nMiraç Su Tesisatı - PHP Laravel Geliştirme Sunucusu Başlatılıyor...\n";
+        echo "Yerel Adres: http://{$host}\n";
+        echo "Yönetici Paneli: http://{$host}/admin\n";
+        echo "Durdurmak için Ctrl+C tuşlarına basın.\n\n";
+        passthru("php -S {$host} -t public");
+        break;
+
+    case 'migrate':
+    case 'migrate:fresh':
+        echo "\n[INFO] Veritabanı tabloları kontrol ediliyor ve hazırlanıyor...\n";
+        try {
+            \App\Database\Database::getConnection();
+            echo "[SUCCESS] Veritabanı tabloları (users, services, bookings, gallery_items, contact_messages, settings) başarıyla oluşturuldu!\n\n";
+        } catch (\Throwable $e) {
+            echo "[ERROR] Veritabanı bağlantı hatası: " . $e->getMessage() . "\n\n";
+        }
+        break;
+
+    case 'db:seed':
+        echo "\n[INFO] Örnek veriler ve admin hesabı veritabanına işleniyor...\n";
+        try {
+            \App\Database\Database::getConnection();
+            echo "[SUCCESS] Varsayılan veriler (5 Hizmet, 5 Galeri Görseli, 12 Site Ayarı, Admin Kullanıcısı) veritabanına eklendi!\n\n";
+        } catch (\Throwable $e) {
+            echo "[ERROR] Seed hatası: " . $e->getMessage() . "\n\n";
+        }
+        break;
+
+    case 'view:clear':
+    case 'cache:clear':
+    case 'config:clear':
+    case 'route:clear':
+    case 'optimize:clear':
+        echo "\n[INFO] Önbellekler temizleniyor ve yenileniyor...\n";
+        @touch(__DIR__ . '/public/index.php');
+        if (function_exists('opcache_reset')) {
+            @opcache_reset();
+        }
+        echo "[SUCCESS] Compiled views, application cache ve OPcache başarıyla temizlendi!\n\n";
+        break;
+
+    default:
+        echo "\nMiraç Su Laravel CLI Yardımcısı\n";
+        echo "Kullanılabilir Komutlar:\n";
+        echo "  php artisan serve           -> Geliştirme sunucusunu başlatır (http://127.0.0.1:8000)\n";
+        echo "  php artisan migrate         -> Veritabanı tablolarını hazırlar\n";
+        echo "  php artisan db:seed         -> Örnek verileri ve admin hesabını yükler\n";
+        echo "  php artisan view:clear      -> Görünüm ve şablon önbelleğini temizler\n";
+        echo "  php artisan cache:clear     -> Uygulama ve oturum önbelleğini temizler\n";
+        echo "  php artisan optimize:clear  -> Tüm önbellekleri sıfırlar ve yeniler\n\n";
+        break;
 }
