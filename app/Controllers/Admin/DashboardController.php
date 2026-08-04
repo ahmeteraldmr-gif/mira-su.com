@@ -10,7 +10,7 @@ use App\Models\Setting;
 class DashboardController {
     private function checkAuth() {
         if (empty($_SESSION['admin_user'])) {
-            header('Location: /admin/login');
+            header('Location: ' . url('/admin/login'));
             exit;
         }
     }

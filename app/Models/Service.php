@@ -39,7 +39,17 @@ class Service {
 
     public static function create(array $data): bool {
         $db = Database::getConnection();
-        $slug = self::slugify($data['title']);
+        $baseSlug = self::slugify($data['title']);
+        $slug = $baseSlug;
+        $i = 1;
+
+        while (true) {
+            $check = $db->prepare("SELECT COUNT(*) FROM services WHERE slug = ?");
+            $check->execute([$slug]);
+            if ((int)$check->fetchColumn() === 0) break;
+            $slug = $baseSlug . '-' . $i++;
+        }
+
         $stmt = $db->prepare("INSERT INTO services (title, slug, summary, description, icon, price, is_featured, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $data['title'],
@@ -48,14 +58,24 @@ class Service {
             $data['description'] ?? '',
             $data['icon'] ?? 'fa-wrench',
             $data['price'] ?? 'Teklif Alın',
-            isset($data['is_featured']) ? 1 : 0,
-            isset($data['is_active']) ? 1 : 0
+            isset($data['is_featured']) ? (int)$data['is_featured'] : 1,
+            isset($data['is_active']) ? (int)$data['is_active'] : 1
         ]);
     }
 
     public static function update(int $id, array $data): bool {
         $db = Database::getConnection();
-        $slug = self::slugify($data['title']);
+        $baseSlug = self::slugify($data['title']);
+        $slug = $baseSlug;
+        $i = 1;
+
+        while (true) {
+            $check = $db->prepare("SELECT COUNT(*) FROM services WHERE slug = ? AND id != ?");
+            $check->execute([$slug, $id]);
+            if ((int)$check->fetchColumn() === 0) break;
+            $slug = $baseSlug . '-' . $i++;
+        }
+
         $stmt = $db->prepare("UPDATE services SET title = ?, slug = ?, summary = ?, description = ?, icon = ?, price = ?, is_featured = ?, is_active = ? WHERE id = ?");
         return $stmt->execute([
             $data['title'],
@@ -64,8 +84,8 @@ class Service {
             $data['description'] ?? '',
             $data['icon'] ?? 'fa-wrench',
             $data['price'] ?? 'Teklif Alın',
-            isset($data['is_featured']) ? 1 : 0,
-            isset($data['is_active']) ? 1 : 0,
+            isset($data['is_featured']) ? (int)$data['is_featured'] : 1,
+            isset($data['is_active']) ? (int)$data['is_active'] : 1,
             $id
         ]);
     }
@@ -81,6 +101,6 @@ class Service {
         $text = strtr($text, $tr);
         $text = strtolower(trim($text));
         $text = preg_replace('/[^a-z0-9-]/', '-', $text);
-        return preg_replace('/-+/', '-', $text);
+        return preg_replace('/-+/', '-', trim($text, '-'));
     }
 }
