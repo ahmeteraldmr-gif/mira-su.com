@@ -17,27 +17,27 @@
                 <span class="text-primary fw-bold text-uppercase">Miraç Su Tesisatı Hikayesi</span>
                 <h2 class="display-6 fw-bold text-dark mt-2 mb-4">Geleneksel Ustalığı Teknolojik Robotik Sistemlerle Buluşturduk</h2>
                 <p class="text-muted fs-5">
-                    <?= htmlspecialchars($settings['about_story'] ?? 'Miraç Su Tesisatı & Arıtma Sistemleri, Ada ve çevre bölgelerde sıhhi tesisat sektörünün eksikliklerini ve müşteri mağduriyetlerini gidermek amacıyla kurulmuştur. Evlerde kırmadan dökmeden arıza tespiti yapabilen Alman üretimi teknolojik ekipman yatırımımız ile bölgenin lider tesisat firması haline geldik.') ?>
+                    <?= htmlspecialchars($settings['about_story'] ?? 'Miraç Su Tesisatı & Arıtma Sistemleri, Ada ve çevre bölgelerde sıhhi tesisat sektörünün eksikliklerini ve müşteri mağduriyetlerini gidermek amacıyla kurulmuştur. Evlerde kırmadan dökmeden arıza ve su kaçağı tespiti yapabilen Alman üretimi termal ve akustik ekipman yatırımımız ile bölgenin lider tesisat firması haline geldik.') ?>
                 </p>
 
                 <div class="row g-4 mt-3">
                     <div class="col-6">
                         <div class="p-3 bg-light rounded-3 border-start border-4 border-primary">
                             <h4 class="fw-bold text-primary mb-1">Misyonumuz</h4>
-                            <p class="small text-muted mb-0"><?= htmlspecialchars($settings['about_mission'] ?? 'Teknolojik cihazlarla kırmadan %100 kesin çözümler sunarak müşteri memnuniyetini en üst seviyede tutmak.') ?></p>
+                            <p class="small text-muted mb-0"><?= htmlspecialchars($settings['about_mission'] ?? 'Teknolojik cihazlarla kırmadan %100 kesin su kaçağı tespiti ve çözümleri sunarak müşteri memnuniyetini en üst seviyede tutmak.') ?></p>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="p-3 bg-light rounded-3 border-start border-4 border-info">
                             <h4 class="fw-bold text-info mb-1">Vizyonumuz</h4>
-                            <p class="small text-muted mb-0"><?= htmlspecialchars($settings['about_vision'] ?? 'Bölgenin en güvenilir, en hızlı ve yenilikçi su tesisatı & arıtma markası konumunu sürdürmek.') ?></p>
+                            <p class="small text-muted mb-0"><?= htmlspecialchars($settings['about_vision'] ?? 'Bölgenin en güvenilir, en hızlı ve yenilikçi su tesisatı & kaçak tespiti markası konumunu sürdürmek.') ?></p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <img src="<?= asset('images/water_filter.png') ?>" alt="Su Arıtma Montajı ve Tesisat" class="img-fluid rounded-4 shadow-lg">
+                <img src="<?= asset('images/leak_detect.png') ?>" alt="Kırmadan Su Kaçağı Tespiti ve Tesisat" class="img-fluid rounded-4 shadow-lg">
             </div>
         </div>
 
