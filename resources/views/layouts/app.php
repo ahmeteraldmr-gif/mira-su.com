@@ -41,9 +41,9 @@
         </ul>
 
         <div class="mt-4 pt-3 border-top border-secondary">
-            <button class="btn btn-warning btn-lg w-100 rounded-pill fw-bold text-dark trigger-booking-modal" data-bs-toggle="modal" data-bs-target="#quickBookingModal" onclick="document.getElementById('mobileNavDrawer').classList.remove('show'); document.getElementById('mobileNavBackdrop').classList.remove('show');">
-                <i class="fa-solid fa-bolt me-2"></i> Acil Servis Çağır
-            </button>
+            <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn btn-warning btn-lg w-100 rounded-pill fw-bold text-dark fs-5 py-3">
+                <i class="fa-solid fa-phone-volume me-2"></i> 7/24 Hemen Ara (0551 957 65 60)
+            </a>
         </div>
     </div>
 
@@ -74,9 +74,9 @@
             </ul>
 
             <div class="d-none d-lg-block">
-                <button class="btn-emergency trigger-booking-modal" data-bs-toggle="modal" data-bs-target="#quickBookingModal">
-                    <i class="fa-solid fa-bolt"></i> Acil Servis Çağır
-                </button>
+                <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn-emergency text-decoration-none">
+                    <i class="fa-solid fa-phone-volume"></i> 7/24 Tıkla Ara
+                </a>
             </div>
         </div>
     </nav>

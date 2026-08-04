@@ -7,49 +7,51 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-7">
                 <div class="hero-badge">
-                    <i class="fa-solid fa-certificate"></i> 7/24 Kırmadan Robotlu Tesisat Servisi
+                    <i class="fa-solid fa-certificate"></i> Hatay ve Çevre İlçeleri 7/24 Acil Tesisat Servisi
                 </div>
                 <h1 class="hero-title">
-                    Kırmadan Dökmeden <br>
-                    <span>Su Kaçağı Tespiti</span> & Tesisat Çözümleri
+                    7/24 Kırmadan Dökmeden <br>
+                    <span>Cihazla Su Kaçağı Tespiti</span>
                 </h1>
                 <p class="hero-lead">
-                    Miraç Su olarak Ada ve çevresinde son teknoloji termal kameralar, akustik dinleme cihazları ve profesyonel ekibimizle evinizi kırmadan noktasal su kaçağı tespiti ve tamiri yapıyoruz.
+                    Miraç Su olarak Hatay ve tüm çevre ilçelerinde son teknoloji termal kameralar, akustik dinleme cihazları ve uzman ekibimizle evinizi kırmadan dökmeden noktasal su kaçağı tespiti ve tamiri yapıyoruz.
                 </p>
-                <div class="d-flex flex-wrap gap-3">
-                    <button class="btn btn-primary btn-lg rounded-pill px-4 py-3 fw-bold trigger-booking-modal" data-bs-toggle="modal" data-bs-target="#quickBookingModal">
-                        <i class="fa-solid fa-calendar-check me-2"></i> Hemen Randevu Al
-                    </button>
-                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05320000000') ?>" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-bold">
-                        <i class="fa-solid fa-phone-volume text-info me-2"></i> 7/24 Acil Servis
+
+                <!-- Devasa Hemen Ara Butonu -->
+                <div class="my-4">
+                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn btn-warning btn-lg rounded-pill px-4 py-3 py-md-4 fs-2 fw-bold text-dark shadow-lg d-flex align-items-center justify-content-center gap-3 w-100 mb-3 border border-3 border-light">
+                        <i class="fa-solid fa-phone-volume fs-1 text-dark"></i> TIKLA HEMEN ARA (0551 957 65 60)
+                    </a>
+                    <a href="https://wa.me/<?= htmlspecialchars($settings['site_whatsapp'] ?? '905519576560') ?>" target="_blank" class="btn btn-success btn-lg rounded-pill px-4 py-3 fs-5 fw-bold d-flex align-items-center justify-content-center gap-2 w-100">
+                        <i class="fa-brands fa-whatsapp fs-2 text-white"></i> WhatsApp İle Konum Gönder
                     </a>
                 </div>
 
                 <div class="row g-3 mt-4 pt-3 border-top border-secondary">
                     <div class="col-sm-4">
                         <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-shield-halved text-info fs-4"></i>
+                            <i class="fa-solid fa-stopwatch text-warning fs-3"></i>
                             <div>
-                                <div class="fw-bold">%100 Garantili</div>
-                                <div class="small text-muted">Kırmadan Tespit</div>
+                                <div class="fw-bold">30 Dk Kapınızdayız</div>
+                                <div class="small text-muted">Hatay İçi Hızlı Mobil Ekip</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-stopwatch text-info fs-4"></i>
+                            <i class="fa-solid fa-camera-rotate text-info fs-3"></i>
                             <div>
-                                <div class="fw-bold">30 Dk Kapınızda</div>
-                                <div class="small text-muted">Hızlı Mobil Ekip</div>
+                                <div class="fw-bold">Termal & Dinleme Cihazı</div>
+                                <div class="small text-muted">Kırmadan Noktasal Tespit</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-hand-holding-dollar text-info fs-4"></i>
+                            <i class="fa-solid fa-shield-halved text-success fs-3"></i>
                             <div>
-                                <div class="fw-bold">Sabit Fiyat</div>
-                                <div class="small text-muted">Sürpriz Ücret Yok</div>
+                                <div class="fw-bold">Sabit Fiyat / Garanti</div>
+                                <div class="small text-muted">Sürpriz Ekstra Ücret Yok</div>
                             </div>
                         </div>
                     </div>
@@ -124,9 +126,9 @@
                         <p class="text-muted mb-4 flex-grow-1"><?= htmlspecialchars($service['summary']) ?></p>
                         <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                             <span class="badge bg-light text-primary border fw-bold px-3 py-2"><?= htmlspecialchars($service['price']) ?></span>
-                            <button class="btn btn-outline-primary btn-sm rounded-pill px-3 trigger-booking-modal" data-bs-toggle="modal" data-bs-target="#quickBookingModal" data-service-title="<?= htmlspecialchars($service['title']) ?>">
-                                <i class="fa-solid fa-arrow-right"></i> Servis İste
-                            </button>
+                            <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold text-dark">
+                                <i class="fa-solid fa-phone-volume me-1"></i> Hemen Ara
+                            </a>
                         </div>
                     </div>
                 </div>
