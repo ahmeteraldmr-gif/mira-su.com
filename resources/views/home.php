@@ -15,43 +15,47 @@
                 </h1>
                 <p class="hero-lead">
                     Miraç Su olarak Hatay ve tüm çevre ilçelerinde son teknoloji termal kameralar, akustik dinleme cihazları ve uzman ekibimizle evinizi kırmadan dökmeden noktasal su kaçağı tespiti ve tamiri yapıyoruz.
-                </p>
-
-                <!-- Devasa Hemen Ara Butonu -->
-                <div class="my-4">
-                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn btn-warning btn-lg rounded-pill px-4 py-3 py-md-4 fs-2 fw-bold text-dark shadow-lg d-flex align-items-center justify-content-center gap-3 w-100 mb-3 border border-3 border-light">
-                        <i class="fa-solid fa-phone-volume fs-1 text-dark"></i> TIKLA HEMEN ARA (0551 957 65 60)
+                <!-- High-Converting Call & WhatsApp Buttons -->
+                <div class="my-4 d-flex flex-column gap-3">
+                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn-call-hero shadow-lg">
+                        <div class="btn-call-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                        <div class="btn-call-text">
+                            <span class="btn-call-title">TIKLA HEMEN ARA</span>
+                            <span class="btn-call-number">0551 957 65 60</span>
+                        </div>
                     </a>
-                    <a href="https://wa.me/<?= htmlspecialchars($settings['site_whatsapp'] ?? '905519576560') ?>" target="_blank" class="btn btn-success btn-lg rounded-pill px-4 py-3 fs-5 fw-bold d-flex align-items-center justify-content-center gap-2 w-100">
-                        <i class="fa-brands fa-whatsapp fs-2 text-white"></i> WhatsApp İle Konum Gönder
+                    <a href="https://wa.me/<?= htmlspecialchars($settings['site_whatsapp'] ?? '905519576560') ?>" target="_blank" class="btn-whatsapp-hero">
+                        <i class="fa-brands fa-whatsapp fs-3"></i>
+                        <span>WhatsApp İle Konum Gönder</span>
                     </a>
                 </div>
 
-                <div class="row g-3 mt-4 pt-3 border-top border-secondary">
-                    <div class="col-sm-4">
-                        <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-stopwatch text-warning fs-3"></i>
+                <!-- Trust Elements Grid -->
+                <div class="row g-3 mt-3 pt-3 border-top border-secondary">
+                    <div class="col-12 col-sm-4">
+                        <div class="trust-badge-card">
+                            <i class="fa-solid fa-stopwatch text-warning fs-2 flex-shrink-0"></i>
                             <div>
-                                <div class="fw-bold">30 Dk Kapınızdayız</div>
-                                <div class="small text-muted">Hatay İçi Hızlı Mobil Ekip</div>
+                                <div class="fw-bold text-white fs-6">30 Dk Kapınızdayız</div>
+                                <div class="small text-light opacity-75">Hatay İçi Mobil Ekip</div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-camera-rotate text-info fs-3"></i>
+                    <div class="col-12 col-sm-4">
+                        <div class="trust-badge-card">
+                            <i class="fa-solid fa-camera-rotate text-info fs-2 flex-shrink-0"></i>
                             <div>
-                                <div class="fw-bold">Termal & Dinleme Cihazı</div>
-                                <div class="small text-muted">Kırmadan Noktasal Tespit</div>
+                                <div class="fw-bold text-white fs-6">Termal & Dinleme</div>
+                                <div class="small text-light opacity-75">Kırmadan Noktasal</div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="d-flex align-items-center gap-2 text-light">
-                            <i class="fa-solid fa-shield-halved text-success fs-3"></i>
+                    <div class="col-12 col-sm-4">
+                        <div class="trust-badge-card">
+                            <i class="fa-solid fa-shield-halved text-success fs-2 flex-shrink-0"></i>
                             <div>
-                                <div class="fw-bold">Sabit Fiyat / Garanti</div>
-                                <div class="small text-muted">Sürpriz Ekstra Ücret Yok</div>
+                                <div class="fw-bold text-white fs-6">Sabit Fiyat / Garanti</div>
+                                <div class="small text-light opacity-75">Sürpriz Ekstra Ücret Yok</div>
                             </div>
                         </div>
                     </div>
