@@ -140,7 +140,7 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <img src="/images/leak_detect.png" alt="Termal Kamera Su Kaçağı" class="img-fluid rounded-4 shadow border border-secondary">
+                <img src="<?= asset('images/leak_detect.png') ?>" alt="Termal Kamera Su Kaçağı" class="img-fluid rounded-4 shadow border border-secondary">
             </div>
             <div class="col-lg-6">
                 <span class="text-info fw-bold text-uppercase">Neden Miraç Su Tesisatı?</span>
