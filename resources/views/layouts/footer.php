@@ -107,11 +107,11 @@
                     <ul class="list-unstyled footer-contact-list">
                         <li class="mb-3 d-flex gap-2 align-items-start">
                             <i class="fa-solid fa-location-dot text-info fs-5 mt-1 me-1"></i>
-                            <span class="footer-info-text"><?= htmlspecialchars($settings['site_address'] ?? 'Ada / İstanbul') ?></span>
+                            <span class="footer-info-text"><?= htmlspecialchars($settings['site_address'] ?? 'Hatay ve Tüm Çevre İlçeleri') ?></span>
                         </li>
                         <li class="mb-3 d-flex gap-2 align-items-center">
                             <i class="fa-solid fa-phone text-info fs-5 me-1"></i>
-                            <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '') ?>" class="footer-phone-link"><?= htmlspecialchars($settings['site_phone'] ?? '0532 000 00 00') ?></a>
+                            <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="footer-phone-link"><?= htmlspecialchars($settings['site_phone'] ?? '0551 957 65 60') ?></a>
                         </li>
                         <li class="mb-3 d-flex gap-2 align-items-center">
                             <i class="fa-solid fa-envelope text-info fs-5 me-1"></i>

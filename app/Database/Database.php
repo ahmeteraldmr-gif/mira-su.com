@@ -190,28 +190,31 @@ class Database {
             }
         }
 
-        // Check if settings exist
-        $stmt = $db->query("SELECT COUNT(*) FROM settings");
-        if ((int)$stmt->fetchColumn() === 0) {
-            $settings = [
-                'site_name' => 'Miraç Su Tesisatı & Arıtma Sistemleri',
-                'site_phone' => '0532 000 00 00',
-                'site_whatsapp' => '905320000000',
-                'site_emergency' => '0532 000 00 00',
-                'site_email' => 'info@miracsutesisat.com',
-                'site_address' => 'Ada / İstanbul ve Tüm Çevre İlçeleri',
-                'working_hours' => '7/24 Kesintisiz Mobil Servis Hizmeti',
-                'about_story' => 'Miraç Su Tesisatı & Arıtma Sistemleri olarak 15 yılı aşkın süredir son teknoloji termal kameralar, akustik dinleme cihazları ve robotik kanal açma sistemlerimizle hizmet vermekteyiz.',
-                'about_mission' => 'Müşterilerimize ev ve iş yerlerinde hiçbir yeri kırmadan dökmeden en ekonomik ve %100 garantili tesisat çözümleri sunmak.',
-                'about_vision' => 'Bölgemizin en güvenilir, teknolojik ve hızlı acil tesisat servisi olmaya devam etmek.',
-                'facebook_url' => 'https://facebook.com',
-                'instagram_url' => 'https://instagram.com'
-            ];
+        // Always ensure updated contact information for Hatay and phone 0551 957 65 60
+        $settings = [
+            'site_name' => 'Miraç Su Tesisatı & Arıtma Sistemleri',
+            'site_phone' => '0551 957 65 60',
+            'site_whatsapp' => '905519576560',
+            'site_emergency' => '0551 957 65 60',
+            'site_email' => 'info@miracsutesisat.com',
+            'site_address' => 'Hatay ve Tüm Çevre İlçeleri',
+            'working_hours' => '7/24 Kesintisiz Mobil Servis Hizmeti',
+            'about_story' => 'Miraç Su Tesisatı & Arıtma Sistemleri olarak 15 yılı aşkın süredir Hatay ve çevre bölgelerde son teknoloji termal kameralar, akustik dinleme cihazları ve robotik kanal açma sistemlerimizle hizmet vermekteyiz.',
+            'about_mission' => 'Teknolojik cihazlarla kırmadan %100 kesin su kaçağı tespiti ve çözümleri sunarak müşteri memnuniyetini en üst seviyede tutmak.',
+            'about_vision' => 'Hatay bölgesinin en güvenilir, en hızlı ve yenilikçi su tesisatı & kaçak tespiti markası konumunu sürdürmek.',
+            'facebook_url' => 'https://facebook.com',
+            'instagram_url' => 'https://instagram.com'
+        ];
 
-            $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
-            foreach ($settings as $k => $v) {
-                $stmt->execute([$k, $v]);
-            }
+        $driver = env('DB_CONNECTION', 'mysql');
+        if ($driver === 'mysql') {
+            $stmt = $db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
+        } else {
+            $stmt = $db->prepare("INSERT OR REPLACE INTO settings (setting_key, setting_value) VALUES (?, ?)");
+        }
+
+        foreach ($settings as $k => $v) {
+            $stmt->execute([$k, $v]);
         }
     }
 }

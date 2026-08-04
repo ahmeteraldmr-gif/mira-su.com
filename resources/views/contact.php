@@ -20,7 +20,7 @@
                     </div>
                     <h5 class="fw-bold text-dark mb-1">Telefon / Çağrı Merkezi</h5>
                     <p class="text-muted small mb-3">7/24 Kesintisiz Acil Çağrı</p>
-                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05320000000') ?>" class="btn btn-outline-primary rounded-pill fw-bold px-3 py-2 w-100"><?= htmlspecialchars($settings['site_phone'] ?? '0532 000 00 00') ?></a>
+                    <a href="tel:<?= preg_replace('/[^0-9]/', '', $settings['site_phone'] ?? '05519576560') ?>" class="btn btn-outline-primary rounded-pill fw-bold px-3 py-2 w-100"><?= htmlspecialchars($settings['site_phone'] ?? '0551 957 65 60') ?></a>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                     </div>
                     <h5 class="fw-bold text-dark mb-1">WhatsApp Destek</h5>
                     <p class="text-muted small mb-3">Konum Gönderin, Anında Gelelim</p>
-                    <a href="https://wa.me/<?= htmlspecialchars($settings['site_whatsapp'] ?? '905320000000') ?>" target="_blank" class="btn btn-outline-success rounded-pill fw-bold px-3 py-2 w-100">+<?= htmlspecialchars($settings['site_whatsapp'] ?? '905320000000') ?></a>
+                    <a href="https://wa.me/<?= htmlspecialchars($settings['site_whatsapp'] ?? '905519576560') ?>" target="_blank" class="btn btn-outline-success rounded-pill fw-bold px-3 py-2 w-100">+<?= htmlspecialchars($settings['site_whatsapp'] ?? '905519576560') ?></a>
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <h5 class="fw-bold text-dark mb-1">Servis Adresimiz</h5>
-                    <p class="text-muted small mb-0"><?= htmlspecialchars($settings['site_address'] ?? 'Merkez Mah. Tesisatçılar Cad. No:45 Ada / İstanbul') ?></p>
+                    <p class="text-muted small mb-0"><?= htmlspecialchars($settings['site_address'] ?? 'Hatay ve Tüm Çevre İlçeleri') ?></p>
                 </div>
             </div>
         </div>
