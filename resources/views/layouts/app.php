@@ -7,13 +7,13 @@
     <meta name="description" content="Miraç Su Tesisatı - Hatay ve tüm çevre ilçelerde robotla kırmadan dökmeden su kaçağı tespiti, tıkanıklık açma, petek temizliği ve su arıtma montajı. 7/24 Acil Servis.">
 
     <!-- Favicon & Google Search Site Logo with Cache Busting -->
-    <link rel="shortcut icon" href="/favicon.ico?v=3" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico?v=3" type="image/x-icon">
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png?v=3">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=3">
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png?v=3">
-    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png?v=3">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3">
+    <link rel="shortcut icon" href="/favicon.ico?v=4" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico?v=4" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png?v=4">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png?v=4">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png?v=4">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png?v=4">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
 
     <!-- Open Graph / Google Search Metadata -->
     <meta property="og:site_name" content="Miraç Su Tesisatı">
