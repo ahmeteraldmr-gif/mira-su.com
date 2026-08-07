@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($title ?? 'Miraç Su Tesisatı & Arıtma Sistemleri') ?></title>
-    <meta name="description" content="Miraç Su Tesisatı - Robotla kırmadan dökmeden su kaçağı tespiti, tıkanıklık açma, petek temizliği ve su arıtma sistemleri montajı. 7/24 Acil Servis.">
+    <meta name="description" content="Miraç Su Tesisatı - Hatay ve tüm çevre ilçelerde robotla kırmadan dökmeden su kaçağı tespiti, tıkanıklık açma, petek temizliği ve su arıtma montajı. 7/24 Acil Servis.">
+
+    <!-- Favicon & Google Search Site Logo -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset('favicon.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset('favicon.png') ?>">
+    <link rel="shortcut icon" href="<?= asset('favicon.ico') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset('apple-touch-icon.png') ?>">
+
+    <!-- Open Graph / Google Search Metadata -->
+    <meta property="og:site_name" content="Miraç Su Tesisatı">
+    <meta property="og:title" content="<?= htmlspecialchars($title ?? 'Miraç Su Tesisatı & Arıtma Sistemleri') ?>">
+    <meta property="og:description" content="Miraç Su Tesisatı - Hatay ve çevre ilçelerde 7/24 kırmadan dökmeden cihazla su kaçağı tespiti ve tamiri.">
+    <meta property="og:image" content="<?= asset('images/logo.png') ?>">
+    <meta property="og:type" content="website">
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 -->
