@@ -130,6 +130,13 @@ class Database {
             created_at {$dt}
         )");
 
+        // Auto-migrate settings table schema if old column names exist
+        try {
+            $db->query("SELECT setting_key FROM settings LIMIT 1");
+        } catch (\Throwable $e) {
+            $db->exec("DROP TABLE IF EXISTS settings");
+        }
+
         // Settings table
         $db->exec("CREATE TABLE IF NOT EXISTS settings (
             id {$pk},
