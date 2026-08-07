@@ -6,11 +6,12 @@
     <title><?= htmlspecialchars($title ?? 'Miraç Su Tesisatı & Arıtma Sistemleri') ?></title>
     <meta name="description" content="Miraç Su Tesisatı - Hatay ve tüm çevre ilçelerde robotla kırmadan dökmeden su kaçağı tespiti, tıkanıklık açma, petek temizliği ve su arıtma montajı. 7/24 Acil Servis.">
 
-    <!-- Favicon & Google Search Site Logo -->
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset('favicon.png') ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset('favicon.png') ?>">
-    <link rel="shortcut icon" href="<?= asset('favicon.ico') ?>">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset('apple-touch-icon.png') ?>">
+    <!-- Favicon & Google Search Site Logo with Cache Busting -->
+    <link rel="shortcut icon" href="/favicon.ico?v=2" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset('favicon.png') ?>?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset('favicon.png') ?>?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset('apple-touch-icon.png') ?>?v=2">
 
     <!-- Open Graph / Google Search Metadata -->
     <meta property="og:site_name" content="Miraç Su Tesisatı">
